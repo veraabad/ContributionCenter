@@ -8,28 +8,48 @@
 
 import UIKit
 
+// View Controller to show a simple view for a few seconds after user has been logged in
 class AuthenticatedViewController: UIViewController {
-
+    
+    // Show image depending on type of authentication
+    @IBOutlet weak var authenticatedImageView: UIImageView!
+    
+    // holds what device this is
+    var deviceInterface:UIUserInterfaceIdiom!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // First find out if device is iphone or ipad
+        deviceInterface = UIDevice.currentDevice().userInterfaceIdiom
+        // Set uiimage with white tint
+        authenticatedImageView.tintColor = UIColor.whiteColor()
+    }
+    
+    // Setup authentication image according to device
+    override func viewWillAppear(animated: Bool) {
+        var img:UIImage!
+        if deviceInterface == .Phone {
+            img = UIImage(named: "Fingerprint")
+        }
+        else if deviceInterface == .Pad {
+            img = UIImage(named: "Checkmark")
+        }
+        authenticatedImageView.image = img.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+    }
+    
+    // Only show view for 5 seconds
+    override func viewDidAppear(animated: Bool) {
+        let delay = 5 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            println("Timer up")
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

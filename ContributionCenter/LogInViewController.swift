@@ -17,6 +17,9 @@ class LogInViewController: UIViewController {
     // Blur for background of button
     var blur:UIVisualEffectView!
     
+    // Device interface
+    var deviceInterface:UIUserInterfaceIdiom!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,11 +30,8 @@ class LogInViewController: UIViewController {
             println("Object has been saved.")
         } */
         
-        // if iPhone then only allow view in portrait
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            let devOrientation = UIInterfaceOrientation.Portrait.rawValue
-            UIDevice.currentDevice().setValue(devOrientation, forKey: "orientation")
-        }
+        // Find out which device were on
+        deviceInterface = UIDevice.currentDevice().userInterfaceIdiom
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,20 +46,6 @@ class LogInViewController: UIViewController {
         blur.userInteractionEnabled = false
         procederBttn.addSubview(blur)
         procederBttn.sendSubviewToBack(blur)
-        
-        
-    }
-    
-    // Only autorotate this screen if on ipad
-    override func shouldAutorotate() -> Bool {
-        var rotateBool:Bool!
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            rotateBool = false
-        }
-        else {
-            rotateBool = true
-        }
-        return rotateBool
     }
     
     // Update frame of blur with rotation
@@ -80,6 +66,7 @@ class LogInViewController: UIViewController {
                 if success {
                     dispatch_async(dispatch_get_main_queue(), {
                         println("Woohoo")
+                        self.showVC("AuthenticatedVC")
                     })
                 } else {
                     dispatch_async(dispatch_get_main_queue(), {
@@ -90,10 +77,21 @@ class LogInViewController: UIViewController {
         }
     }
     
+    func showVC(stringID: String) {
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let viewC = storyBoard.instantiateViewControllerWithIdentifier(stringID) as! UIViewController
+        self.showViewController(viewC, sender: self)
+    }
+    
     // Action for when the "Proceder" button has been pressed
     @IBAction func procedeAction(sender: AnyObject) {
-        requestFingerprintAuthentication()
-        println("Hi")
+        // If iPhone then user fingerprint to login
+        if deviceInterface == .Phone {
+            requestFingerprintAuthentication()
+        }
+        else if deviceInterface == .Pad {
+            showVC("AuthenticationVC") // If iPad then go to QRAuthentication
+        }
     }
 
 }

@@ -22,12 +22,12 @@
 		CB187C2E1AF2A85A000311F6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CB187C2D1AF2A85A000311F6 /* libsqlite3.dylib */; };
 		CB2F5DC21AE7173800A1E0A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F5DC11AE7173800A1E0A6 /* AppDelegate.swift */; };
 		CB2F5DC51AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB2F5DC31AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld */; };
-		CB2F5DC71AE7173900A1E0A6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F5DC61AE7173900A1E0A6 /* ViewController.swift */; };
 		CB2F5DCA1AE7173A00A1E0A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB2F5DC81AE7173A00A1E0A6 /* Main.storyboard */; };
 		CB2F5DCC1AE7173B00A1E0A6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB2F5DCB1AE7173B00A1E0A6 /* Images.xcassets */; };
 		CB2F5DCF1AE7173B00A1E0A6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2F5DCD1AE7173B00A1E0A6 /* LaunchScreen.xib */; };
 		CB2F5DDB1AE7173B00A1E0A6 /* ContributionCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F5DDA1AE7173B00A1E0A6 /* ContributionCenterTests.swift */; };
 		CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */; };
+		CB6AF0001AF6C93900529859 /* QRAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */; };
 		CB6EF5E61AEAD02100508E2F /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,7 +59,6 @@
 		CB2F5DC01AE7173800A1E0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB2F5DC11AE7173800A1E0A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB2F5DC41AE7173900A1E0A6 /* ContributionCenter.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ContributionCenter.xcdatamodel; sourceTree = "<group>"; };
-		CB2F5DC61AE7173900A1E0A6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CB2F5DC91AE7173A00A1E0A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CB2F5DCB1AE7173B00A1E0A6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CB2F5DCE1AE7173B00A1E0A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -67,6 +66,7 @@
 		CB2F5DD91AE7173B00A1E0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB2F5DDA1AE7173B00A1E0A6 /* ContributionCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionCenterTests.swift; sourceTree = "<group>"; };
 		CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedViewController.swift; sourceTree = "<group>"; };
+		CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRAuthenticationViewController.swift; sourceTree = "<group>"; };
 		CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,10 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				CB2F5DC11AE7173800A1E0A6 /* AppDelegate.swift */,
-				CB2F5DC61AE7173900A1E0A6 /* ViewController.swift */,
 				CB2F5DC81AE7173A00A1E0A6 /* Main.storyboard */,
-				CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */,
-				CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */,
+				CB6AF0011AF8001F00529859 /* ViewControllers */,
 				CB2F5DCB1AE7173B00A1E0A6 /* Images.xcassets */,
 				CB2F5DCD1AE7173B00A1E0A6 /* LaunchScreen.xib */,
 				CB2F5DC31AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld */,
@@ -180,6 +178,16 @@
 				CB2F5DD91AE7173B00A1E0A6 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CB6AF0011AF8001F00529859 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */,
+				CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */,
+				CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,7 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB6EF5E61AEAD02100508E2F /* LogInViewController.swift in Sources */,
-				CB2F5DC71AE7173900A1E0A6 /* ViewController.swift in Sources */,
+				CB6AF0001AF6C93900529859 /* QRAuthenticationViewController.swift in Sources */,
 				CB2F5DC51AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld in Sources */,
 				CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */,
 				CB2F5DC21AE7173800A1E0A6 /* AppDelegate.swift in Sources */,
