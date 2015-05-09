@@ -20,6 +20,7 @@
 		CB187C2A1AF2A83D000311F6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB187C291AF2A83D000311F6 /* SystemConfiguration.framework */; };
 		CB187C2C1AF2A84C000311F6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CB187C2B1AF2A84C000311F6 /* libz.dylib */; };
 		CB187C2E1AF2A85A000311F6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CB187C2D1AF2A85A000311F6 /* libsqlite3.dylib */; };
+		CB27C91A1AFABC7300DF3B61 /* QRBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27C9191AFABC7300DF3B61 /* QRBaseViewController.swift */; };
 		CB2F5DC21AE7173800A1E0A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F5DC11AE7173800A1E0A6 /* AppDelegate.swift */; };
 		CB2F5DC51AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB2F5DC31AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld */; };
 		CB2F5DCA1AE7173A00A1E0A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB2F5DC81AE7173A00A1E0A6 /* Main.storyboard */; };
@@ -28,7 +29,10 @@
 		CB2F5DDB1AE7173B00A1E0A6 /* ContributionCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F5DDA1AE7173B00A1E0A6 /* ContributionCenterTests.swift */; };
 		CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */; };
 		CB6AF0001AF6C93900529859 /* QRAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */; };
+		CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */; };
 		CB6EF5E61AEAD02100508E2F /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */; };
+		CB81E3C31AFAD5D800D79DC0 /* QRGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81E3C21AFAD5D800D79DC0 /* QRGenerator.swift */; };
+		CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,7 @@
 		CB187C291AF2A83D000311F6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		CB187C2B1AF2A84C000311F6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CB187C2D1AF2A85A000311F6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		CB27C9191AFABC7300DF3B61 /* QRBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRBaseViewController.swift; sourceTree = "<group>"; };
 		CB2F5DBC1AE7173800A1E0A6 /* ContributionCenter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContributionCenter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB2F5DC01AE7173800A1E0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB2F5DC11AE7173800A1E0A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,7 +72,10 @@
 		CB2F5DDA1AE7173B00A1E0A6 /* ContributionCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionCenterTests.swift; sourceTree = "<group>"; };
 		CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedViewController.swift; sourceTree = "<group>"; };
 		CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRAuthenticationViewController.swift; sourceTree = "<group>"; };
+		CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		CB81E3C21AFAD5D800D79DC0 /* QRGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRGenerator.swift; sourceTree = "<group>"; };
+		CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSideBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,8 +152,10 @@
 		CB2F5DBE1AE7173800A1E0A6 /* ContributionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				CB81E3C21AFAD5D800D79DC0 /* QRGenerator.swift */,
 				CB2F5DC11AE7173800A1E0A6 /* AppDelegate.swift */,
 				CB2F5DC81AE7173A00A1E0A6 /* Main.storyboard */,
+				CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */,
 				CB6AF0011AF8001F00529859 /* ViewControllers */,
 				CB2F5DCB1AE7173B00A1E0A6 /* Images.xcassets */,
 				CB2F5DCD1AE7173B00A1E0A6 /* LaunchScreen.xib */,
@@ -183,7 +193,9 @@
 		CB6AF0011AF8001F00529859 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */,
 				CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */,
+				CB27C9191AFABC7300DF3B61 /* QRBaseViewController.swift */,
 				CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */,
 				CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */,
 			);
@@ -239,6 +251,7 @@
 				TargetAttributes = {
 					CB2F5DBB1AE7173800A1E0A6 = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = 2D36LT9T38;
 					};
 					CB2F5DD31AE7173B00A1E0A6 = {
 						CreatedOnToolsVersion = 6.3;
@@ -294,7 +307,11 @@
 				CB6AF0001AF6C93900529859 /* QRAuthenticationViewController.swift in Sources */,
 				CB2F5DC51AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld in Sources */,
 				CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */,
+				CB27C91A1AFABC7300DF3B61 /* QRBaseViewController.swift in Sources */,
+				CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */,
 				CB2F5DC21AE7173800A1E0A6 /* AppDelegate.swift in Sources */,
+				CB81E3C31AFAD5D800D79DC0 /* QRGenerator.swift in Sources */,
+				CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,6 +440,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ContributionCenter",
@@ -438,6 +456,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ContributionCenter",
