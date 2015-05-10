@@ -32,6 +32,7 @@
 		CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */; };
 		CB6EF5E61AEAD02100508E2F /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */; };
 		CB81E3C31AFAD5D800D79DC0 /* QRGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81E3C21AFAD5D800D79DC0 /* QRGenerator.swift */; };
+		CB9219FE1AFEC38900E4A6F5 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9219FD1AFEC38900E4A6F5 /* MenuTableViewCell.swift */; };
 		CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +76,7 @@
 		CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		CB81E3C21AFAD5D800D79DC0 /* QRGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRGenerator.swift; sourceTree = "<group>"; };
+		CB9219FD1AFEC38900E4A6F5 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSideBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -156,6 +158,7 @@
 				CB2F5DC11AE7173800A1E0A6 /* AppDelegate.swift */,
 				CB2F5DC81AE7173A00A1E0A6 /* Main.storyboard */,
 				CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */,
+				CB9219FF1AFEC39100E4A6F5 /* Views */,
 				CB6AF0011AF8001F00529859 /* ViewControllers */,
 				CB2F5DCB1AE7173B00A1E0A6 /* Images.xcassets */,
 				CB2F5DCD1AE7173B00A1E0A6 /* LaunchScreen.xib */,
@@ -200,6 +203,14 @@
 				CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		CB9219FF1AFEC39100E4A6F5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CB9219FD1AFEC38900E4A6F5 /* MenuTableViewCell.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,6 +318,7 @@
 				CB6AF0001AF6C93900529859 /* QRAuthenticationViewController.swift in Sources */,
 				CB2F5DC51AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld in Sources */,
 				CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */,
+				CB9219FE1AFEC38900E4A6F5 /* MenuTableViewCell.swift in Sources */,
 				CB27C91A1AFABC7300DF3B61 /* QRBaseViewController.swift in Sources */,
 				CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */,
 				CB2F5DC21AE7173800A1E0A6 /* AppDelegate.swift in Sources */,

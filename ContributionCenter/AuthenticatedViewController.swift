@@ -17,6 +17,9 @@ class AuthenticatedViewController: UIViewController {
     // holds what device this is
     var deviceInterface:UIUserInterfaceIdiom!
     
+    // Show view for this amount of secons
+    var delaySec = 2
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,10 +43,12 @@ class AuthenticatedViewController: UIViewController {
     
     // Only show view for 5 seconds
     override func viewDidAppear(animated: Bool) {
-        let delay = 5 * Double(NSEC_PER_SEC)
+        let delay = Double(delaySec) * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             println("Timer up")
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("SideBarController") as! AVSideBarController
+            self.showViewController(vc, sender: self)
         }
     }
 

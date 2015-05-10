@@ -25,12 +25,23 @@ class QRAuthenticationViewController: QRBaseViewController {
     // QR code generator
     var qrGenerator: QRGenerator!
     
+    // If there is a parent view then save it here
+    var parentVC:AVSideBarController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Setup views
         setPortraitViews(cameraViewP, otherView: qrImageViewP)
         setLandscapeViews(cameraViewL, otherView: qrImageViewL)
+        
+        if let vc = self.navigationController?.parentViewController as? AVSideBarController {
+            // Save instance of parentViewController
+            println("QR has parent")
+            parentVC = vc
+            var rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
+            self.navigationItem.leftBarButtonItem = rightItem
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -64,6 +75,13 @@ class QRAuthenticationViewController: QRBaseViewController {
                 var vc = self.storyboard?.instantiateViewControllerWithIdentifier("AuthenticatedVC") as! AuthenticatedViewController
                 self.showViewController(vc, sender: self)
             }
+        }
+    }
+    
+    func showMenuAction() {
+        println("Menu called")
+        if parentVC != nil {
+            parentVC.showMenu()
         }
     }
 

@@ -23,6 +23,9 @@ class AVSideBarController: UIViewController {
     // View controller that is called by the sidebar Menu
     var currentVC: UIViewController!
     
+    // UINavigationController for child view
+    var childNav:UINavigationController!
+    
     // Previous view controller
     var previousVC:UIViewController?
 
@@ -31,14 +34,18 @@ class AVSideBarController: UIViewController {
 
         // Setup side menu view controller
         sideMenuVC = self.storyboard?.instantiateViewControllerWithIdentifier("MenuVC") as! MenuViewController
+        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("QRNavController") as! UINavigationController
+        addVC(vc)
+        showCurrentVC()
     }
     
     // Bring up menu
     override func viewWillAppear(animated: Bool) {
+        /*
         self.addChildViewController(sideMenuVC)
         sideMenuVC.view.frame = self.view.frame
         self.view.addSubview(sideMenuVC.view)
-        sideMenuVC.didMoveToParentViewController(self)
+        sideMenuVC.didMoveToParentViewController(self) */
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,9 +67,10 @@ class AVSideBarController: UIViewController {
     
     // Show current view controller without animation
     func showCurrentVC() {
-        self.addChildViewController(currentVC)
         currentVC.view.frame = self.view.frame
-        self.view.addSubview(sideMenuVC.view)
+        
+        self.addChildViewController(currentVC)
+        self.view.addSubview(currentVC.view)
         currentVC.didMoveToParentViewController(self)
     }
     
@@ -83,12 +91,20 @@ class AVSideBarController: UIViewController {
     }
     
     func moveMenu(newVC: UIViewController) {
-        // Move previous current view controller
-        shiftCurrentVC()
-        // Add newVC to currentVC
-        addVC(newVC)
-        // Animate appearance
-        showViewControllerFromSide(newVC, inContainer: self.view, bounds: self.view.bounds, side: .RIGHT)
+        if newVC != currentVC {
+            println("Not Same")
+            // Move previous current view controller
+            shiftCurrentVC()
+            // Add newVC to currentVC
+            addVC(newVC)
+            
+            // Animate appearance
+            showViewControllerFromSide(newVC, inContainer: self.view, bounds: self.view.bounds, side: .RIGHT)
+        }
+        else if newVC == currentVC {
+            println("Same")
+            hideMenu()
+        }
     }
     
     
