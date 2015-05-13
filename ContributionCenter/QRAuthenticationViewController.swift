@@ -39,12 +39,37 @@ class QRAuthenticationViewController: QRBaseViewController {
             // Save instance of parentViewController
             println("QR has parent")
             parentVC = vc
+            // Have a clear background for UINavigationController
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.translucent = true
+            self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+            
+            // Navigation item on the right for 
             var rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
             self.navigationItem.leftBarButtonItem = rightItem
         }
     }
     
     override func viewDidAppear(animated: Bool) {
+        if self.navigationController != nil {
+            var navHeight = self.navigationController?.navigationBar.frame.size.height
+            println("Nav height: \(navHeight)")
+            var frameRect = qrImageViewP.frame
+            println("Frame: \(frameRect)")
+            // Resize cameraViewP
+            qrImageViewP.frame = CGRectMake(0, frameRect.origin.y + navHeight!, frameRect.size.width, frameRect.size.height - navHeight!)
+            
+            // Resize cameraViewL
+            frameRect = cameraViewL.frame
+            println("Frame: \(frameRect)")
+            cameraViewL.frame = CGRectMake(frameRect.origin.x, frameRect.origin.y + navHeight!, frameRect.size.width, frameRect.size.height - navHeight!)
+            
+            // Resize qrImageViewL
+            frameRect = qrImageViewL.frame
+            println("Frame: \(frameRect)")
+            qrImageViewL.frame = CGRectMake(frameRect.origin.x, frameRect.origin.y + navHeight!, frameRect.size.width, frameRect.size.height - navHeight!)
+        }
         // Find camera and start it up
         findCamera()
         previewLayerConnection = previewLayer?.connection

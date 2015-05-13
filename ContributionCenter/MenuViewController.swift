@@ -15,9 +15,7 @@ class MenuViewController: UIViewController,UITableViewDataSource, UITableViewDel
     // To hold instance of parent view controller
     var parentVC: AVSideBarController!
     
-    // Previous view controller
-    var previousVC: UIViewController!
-    
+    // Labels for the menu items
     var menuItems:[String] = ["QR Check In", "Boxes Out", "Sign In iPad", "List"]
 
     override func viewDidLoad() {
@@ -54,29 +52,19 @@ class MenuViewController: UIViewController,UITableViewDataSource, UITableViewDel
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = menuTableView.dequeueReusableCellWithIdentifier("MenuCell") as! MenuTableViewCell
         cell.menuItemLabel.text = menuItems[indexPath.row]
+        cell.backgroundColor = UIColor.clearColor()
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Bring up view depending on which cell chosen
+        let cell = menuTableView.cellForRowAtIndexPath(indexPath) as! MenuTableViewCell
+        println("Title: \(cell.menuItemLabel.text)")
         switch indexPath.row {
         case 0:
-            println("Authentication Called")
-            menuTableView.deselectRowAtIndexPath(indexPath, animated: false)
+            removeSelectionHighlight(indexPath)
             if let vc = self.storyboard?.instantiateViewControllerWithIdentifier("QRNavController") as? UINavigationController {
-                if previousVC != nil {
-                    if previousVC == vc {
-                        parentVC.hideMenu()
-                    }
-                    else {
-                        previousVC = vc
-                        parentVC.moveMenu(vc)
-                    }
-                }
-                else {
-                    previousVC = vc
-                    parentVC.moveMenu(vc)
-                }
+                parentVC.moveMenu(vc)
             }
             
         case 1:
@@ -88,5 +76,10 @@ class MenuViewController: UIViewController,UITableViewDataSource, UITableViewDel
         default:
             println("Not a viable cell item")
         }
+    }
+    
+    // Remove the highlight shown when a cell is selected
+    func removeSelectionHighlight(indexPath: NSIndexPath) {
+        menuTableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
 }

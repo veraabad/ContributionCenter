@@ -91,7 +91,7 @@ class AVSideBarController: UIViewController {
     }
     
     func moveMenu(newVC: UIViewController) {
-        if newVC != currentVC {
+        if newVC.restorationIdentifier != currentVC.restorationIdentifier {
             println("Not Same")
             // Move previous current view controller
             shiftCurrentVC()
@@ -101,7 +101,7 @@ class AVSideBarController: UIViewController {
             // Animate appearance
             showViewControllerFromSide(newVC, inContainer: self.view, bounds: self.view.bounds, side: .RIGHT)
         }
-        else if newVC == currentVC {
+        else if newVC.restorationIdentifier == currentVC.restorationIdentifier {
             println("Same")
             hideMenu()
         }

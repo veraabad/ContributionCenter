@@ -27,6 +27,7 @@
 		CB2F5DCC1AE7173B00A1E0A6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB2F5DCB1AE7173B00A1E0A6 /* Images.xcassets */; };
 		CB2F5DCF1AE7173B00A1E0A6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2F5DCD1AE7173B00A1E0A6 /* LaunchScreen.xib */; };
 		CB2F5DDB1AE7173B00A1E0A6 /* ContributionCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F5DDA1AE7173B00A1E0A6 /* ContributionCenterTests.swift */; };
+		CB56A6581AFFDE7B0018E0DC /* CheckInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A6571AFFDE7B0018E0DC /* CheckInViewController.swift */; };
 		CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */; };
 		CB6AF0001AF6C93900529859 /* QRAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */; };
 		CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */; };
@@ -71,6 +72,7 @@
 		CB2F5DD41AE7173B00A1E0A6 /* ContributionCenterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContributionCenterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB2F5DD91AE7173B00A1E0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB2F5DDA1AE7173B00A1E0A6 /* ContributionCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionCenterTests.swift; sourceTree = "<group>"; };
+		CB56A6571AFFDE7B0018E0DC /* CheckInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInViewController.swift; sourceTree = "<group>"; };
 		CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedViewController.swift; sourceTree = "<group>"; };
 		CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRAuthenticationViewController.swift; sourceTree = "<group>"; };
 		CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 		CB6AF0011AF8001F00529859 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CB56A6571AFFDE7B0018E0DC /* CheckInViewController.swift */,
 				CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */,
 				CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */,
 				CB27C9191AFABC7300DF3B61 /* QRBaseViewController.swift */,
@@ -323,6 +326,7 @@
 				CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */,
 				CB2F5DC21AE7173800A1E0A6 /* AppDelegate.swift in Sources */,
 				CB81E3C31AFAD5D800D79DC0 /* QRGenerator.swift in Sources */,
+				CB56A6581AFFDE7B0018E0DC /* CheckInViewController.swift in Sources */,
 				CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
