@@ -13,8 +13,20 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     // Landscape:
     // camera view
     var cameraViewLandscape: UIView!
+    // Camera view constraints
+    var cameraLandscapeRightTop: [AnyObject] = []
+    var cameraLandscapeRightTrailing: [AnyObject] = []
+    var cameraLandscapeLeftHeight: [AnyObject] = []
     // other view to use
     var otherViewLandscape: UIView?
+    // Other view constraints
+    var otherViewLandscapeRightHeight: [AnyObject] = []
+    var otherViewLandscapeLeftTop: [AnyObject] = []
+    var otherViewLandscapeLeftTrailing:[AnyObject] = []
+    
+    // Landscape Bools
+    var landscapeRight = false
+    var landscapeLeft = false
     
     // Portrait:
     // camera view
@@ -28,7 +40,7 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var otherViewHolder:UIView?
     
     // Camera variables
-    let captureSession = AVCaptureSession()
+    var captureSession = AVCaptureSession()
     var previewLayer:AVCaptureVideoPreviewLayer?
     let captureMetadataOutput = AVCaptureMetadataOutput()
     
@@ -50,9 +62,26 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     }
     
     override func viewWillAppear(animated: Bool) {
+        cameraViewLandscape.setTranslatesAutoresizingMaskIntoConstraints(false)
+        otherViewLandscape?.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        var viewsDict = ["cameraViewLandscape": cameraViewLandscape, "otherViewLandscape": otherViewLandscape]
+        
+        // Set constraints for landscape right
+        cameraLandscapeRightTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[cameraViewLandscape]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
+        
+        cameraLandscapeRightTrailing = NSLayoutConstraint.constraintsWithVisualFormat("|[cameraViewLandscape][otherViewLandscape(==cameraViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
+        
+        otherViewLandscapeRightHeight = NSLayoutConstraint.constraintsWithVisualFormat("V:[otherViewLandscape(==cameraViewLandscape)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+        
+        // Set constraints for landscape left
+        otherViewLandscapeLeftTrailing = NSLayoutConstraint.constraintsWithVisualFormat("|[otherViewLandscape][cameraViewLandscape(==otherViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
+        
+        otherViewLandscapeLeftTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[otherViewLandscape]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
+        
+        cameraLandscapeLeftHeight = NSLayoutConstraint.constraintsWithVisualFormat("V:[cameraViewLandscape(==otherViewLandscape)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+        
         // Find orientation of view controller
-        
-        
         switch UIApplication.sharedApplication().statusBarOrientation {
         case .Portrait:
             println("Portrait")
@@ -71,45 +100,26 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        
-    }
-    
-    /*
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-    if fromInterfaceOrientation.isPortrait {
-    showLandscape()
-    changePreview()
-    previewLayerConnection?.videoOrientation = AVCaptureVideoOrientation.LandscapeRight
-    }
-    
-    if fromInterfaceOrientation.isLandscape {
-    showPortrait()
-    changePreview()
-    previewLayerConnection?.videoOrientation = AVCaptureVideoOrientation.Portrait
-    }
-    }*/
-    
-    
-    
     // MARK
     // View handlers for either portrait or landscape orientation
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if toInterfaceOrientation == .Portrait {
             showPortrait()
-            setPreview()
             previewLayerConnection?.videoOrientation = AVCaptureVideoOrientation.Portrait
         }
         else if toInterfaceOrientation == .LandscapeLeft {
             showLandscapeLeft()
-            setPreview()
             previewLayerConnection?.videoOrientation = AVCaptureVideoOrientation.LandscapeLeft
         }
         else if toInterfaceOrientation == .LandscapeRight {
             showLandscapeRight()
-            setPreview()
             previewLayerConnection?.videoOrientation = AVCaptureVideoOrientation.LandscapeRight
         }
+    }
+    
+    // Reset bounds of preview layer once everything is set
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        updatePreviewLayer()
     }
     
     // Set Landscape views
@@ -143,13 +153,20 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         cameraViewHolder = cameraViewLandscape
         otherViewLandscape?.hidden = false
         otherViewHolder = otherViewLandscape
+        
         // if view in landscape left then flip
-        if cameraViewHolder.frame.origin.x < otherViewHolder?.frame.origin.x {
-            var cameraViewOrigin:CGPoint! = cameraViewHolder.frame.origin
-            var otherViewOrigin:CGPoint! = otherViewHolder?.frame.origin
-            cameraViewHolder.frame.origin = otherViewOrigin
-            otherViewHolder?.frame.origin = cameraViewOrigin
+        println("Landscape right called")
+        self.view.layoutIfNeeded()
+        if landscapeLeft {
+            self.view.removeConstraints(otherViewLandscapeLeftTrailing)
+            self.view.removeConstraints(otherViewLandscapeLeftTop)
+            self.view.removeConstraints(cameraLandscapeLeftHeight)
         }
+        self.view.addConstraints(cameraLandscapeRightTrailing)
+        self.view.addConstraints(cameraLandscapeRightTop)
+        self.view.addConstraints(otherViewLandscapeRightHeight)
+        self.view.layoutIfNeeded()
+        landscapeRight = true
     }
     
     func showLandscapeLeft() {
@@ -158,13 +175,20 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         cameraViewHolder = cameraViewLandscape
         otherViewLandscape?.hidden = false
         otherViewHolder = otherViewLandscape
+        
         // if view in landscape left then flip
-        if cameraViewHolder.frame.origin.x > otherViewHolder?.frame.origin.x {
-            var cameraViewOrigin:CGPoint! = cameraViewHolder.frame.origin
-            var otherViewOrigin:CGPoint! = otherViewHolder?.frame.origin
-            cameraViewHolder.frame.origin = otherViewOrigin
-            otherViewHolder?.frame.origin = cameraViewOrigin
+        println("Landscape left called")
+        self.view.layoutIfNeeded()
+        if landscapeRight {
+            self.view.removeConstraints(cameraLandscapeRightTrailing)
+            self.view.removeConstraints(cameraLandscapeRightTop)
+            self.view.removeConstraints(otherViewLandscapeRightHeight)
         }
+        self.view.addConstraints(otherViewLandscapeLeftTrailing)
+        self.view.addConstraints(otherViewLandscapeLeftTop)
+        self.view.addConstraints(cameraLandscapeLeftHeight)
+        self.view.layoutIfNeeded()
+        landscapeLeft = true
     }
     
     // Show portrait views and hide landscape views
@@ -228,7 +252,7 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         // Add camera layer to view
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
-        previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+        //previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         
         setPreview()
         // Start video capture
@@ -274,13 +298,19 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         cameraViewHolder?.bringSubviewToFront(qrFrameView)
     }
     
+    // Remove previewlayer from super layer
+    func updatePreviewLayer() {
+        previewLayer?.removeFromSuperlayer()
+        setPreview()
+    }
+    
     func setPreview() {
         if previewLayer != nil {
-            previewLayer?.bounds = self.cameraViewHolder.layer.bounds
-            previewLayer?.position = CGPointMake(CGRectGetMidX(cameraViewHolder.layer.bounds), CGRectGetMidY(cameraViewHolder.layer.bounds))
+            previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+            previewLayer?.frame = self.cameraViewHolder.bounds
+            previewLayer?.position = CGPointMake(CGRectGetMidX(cameraViewHolder.bounds), CGRectGetMidY(cameraViewHolder.bounds))
             self.cameraViewHolder?.layer.addSublayer(previewLayer)
         }
     }
-    
    
 }

@@ -68,7 +68,10 @@ class MenuViewController: UIViewController,UITableViewDataSource, UITableViewDel
             }
             
         case 1:
-            println("")
+            removeSelectionHighlight(indexPath)
+            if let vc = self.storyboard?.instantiateViewControllerWithIdentifier("CheckInNavController") as? UINavigationController {
+                parentVC.moveMenu(vc)
+            }
         case 2:
             println("")
         case 3:

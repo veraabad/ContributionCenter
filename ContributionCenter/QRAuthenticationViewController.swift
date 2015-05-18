@@ -45,31 +45,13 @@ class QRAuthenticationViewController: QRBaseViewController {
             self.navigationController?.navigationBar.translucent = true
             self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
             
-            // Navigation item on the right for 
+            // Navigation item on the right for
             var rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
             self.navigationItem.leftBarButtonItem = rightItem
         }
     }
     
     override func viewDidAppear(animated: Bool) {
-        if self.navigationController != nil {
-            var navHeight = self.navigationController?.navigationBar.frame.size.height
-            println("Nav height: \(navHeight)")
-            var frameRect = qrImageViewP.frame
-            println("Frame: \(frameRect)")
-            // Resize cameraViewP
-            qrImageViewP.frame = CGRectMake(0, frameRect.origin.y + navHeight!, frameRect.size.width, frameRect.size.height - navHeight!)
-            
-            // Resize cameraViewL
-            frameRect = cameraViewL.frame
-            println("Frame: \(frameRect)")
-            cameraViewL.frame = CGRectMake(frameRect.origin.x, frameRect.origin.y + navHeight!, frameRect.size.width, frameRect.size.height - navHeight!)
-            
-            // Resize qrImageViewL
-            frameRect = qrImageViewL.frame
-            println("Frame: \(frameRect)")
-            qrImageViewL.frame = CGRectMake(frameRect.origin.x, frameRect.origin.y + navHeight!, frameRect.size.width, frameRect.size.height - navHeight!)
-        }
         // Find camera and start it up
         findCamera()
         previewLayerConnection = previewLayer?.connection
@@ -87,6 +69,17 @@ class QRAuthenticationViewController: QRBaseViewController {
         
         // Show QR Code
         imageView.image = qrGenerator.qrImage
+    }
+    
+    // If turned then show QR here
+    override func showLandscapeLeft() {
+        super.showLandscapeLeft()
+        qrImageViewL.image = qrGenerator.qrImage
+    }
+    // If turned the show QR here
+    override func showLandscapeRight() {
+        super.showLandscapeRight()
+        qrImageViewL.image = qrGenerator.qrImage
     }
     
     override func obtainRespon(qrResponse: String) {

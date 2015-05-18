@@ -34,7 +34,7 @@ class AVSideBarController: UIViewController {
 
         // Setup side menu view controller
         sideMenuVC = self.storyboard?.instantiateViewControllerWithIdentifier("MenuVC") as! MenuViewController
-        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("QRNavController") as! UINavigationController
+        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("CheckInNavController") as! UINavigationController
         addVC(vc)
         showCurrentVC()
     }
