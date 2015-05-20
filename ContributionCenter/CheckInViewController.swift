@@ -14,6 +14,8 @@ class CheckInViewController: QRBaseViewController {
     @IBOutlet weak var infoViewP: UIView!
     // Camera View
     @IBOutlet weak var cameraViewP: UIView!
+    // Label to show the name of the person in
+    @IBOutlet weak var nameLabelP: UILabel!
     
     // Landscape:
     // Info view

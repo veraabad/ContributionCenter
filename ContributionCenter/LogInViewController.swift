@@ -30,6 +30,22 @@ class LogInViewController: UIViewController {
             println("Object has been saved.")
         } */
         
+        // Load one user
+        var userInfo = PFObject(className: "UserInfo")
+        userInfo["firstName"] = "Abad"
+        userInfo["lastName"] = "Vera"
+        userInfo["userEmail"] = "abad_vera@me.com"
+        userInfo.saveInBackgroundWithBlock{ (success: Bool, error: NSError?) -> Void in
+            if success {
+                println("User info saved")
+                println("Object ID: \(userInfo.objectId)")
+            }
+            else {
+                println("Error: \(error?.userInfo)")
+            }
+        }
+
+        
         // Find out which device were on
         deviceInterface = UIDevice.currentDevice().userInterfaceIdiom
     }

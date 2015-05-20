@@ -28,6 +28,11 @@
 		CB2F5DCF1AE7173B00A1E0A6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB2F5DCD1AE7173B00A1E0A6 /* LaunchScreen.xib */; };
 		CB2F5DDB1AE7173B00A1E0A6 /* ContributionCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2F5DDA1AE7173B00A1E0A6 /* ContributionCenterTests.swift */; };
 		CB56A6581AFFDE7B0018E0DC /* CheckInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A6571AFFDE7B0018E0DC /* CheckInViewController.swift */; };
+		CB56A65B1B0A9C290018E0DC /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A65A1B0A9C290018E0DC /* ListViewController.swift */; };
+		CB56A65D1B0AA11A0018E0DC /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A65C1B0AA11A0018E0DC /* ListTableViewCell.swift */; };
+		CB56A65F1B0AA1950018E0DC /* ListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A65E1B0AA1950018E0DC /* ListDetailViewController.swift */; };
+		CB56A6611B0AA2AD0018E0DC /* EditListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A6601B0AA2AD0018E0DC /* EditListDetailViewController.swift */; };
+		CB56A6651B0BC06C0018E0DC /* ParseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A6641B0BC06C0018E0DC /* ParseHelper.swift */; };
 		CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */; };
 		CB6AF0001AF6C93900529859 /* QRAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */; };
 		CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */; };
@@ -73,6 +78,12 @@
 		CB2F5DD91AE7173B00A1E0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB2F5DDA1AE7173B00A1E0A6 /* ContributionCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionCenterTests.swift; sourceTree = "<group>"; };
 		CB56A6571AFFDE7B0018E0DC /* CheckInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInViewController.swift; sourceTree = "<group>"; };
+		CB56A65A1B0A9C290018E0DC /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		CB56A65C1B0AA11A0018E0DC /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		CB56A65E1B0AA1950018E0DC /* ListDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailViewController.swift; sourceTree = "<group>"; };
+		CB56A6601B0AA2AD0018E0DC /* EditListDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListDetailViewController.swift; sourceTree = "<group>"; };
+		CB56A6641B0BC06C0018E0DC /* ParseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHelper.swift; sourceTree = "<group>"; };
+		CB56A66A1B0BF9700018E0DC /* ContributionCenter-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ContributionCenter-Bridging-Header.h"; sourceTree = "<group>"; };
 		CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedViewController.swift; sourceTree = "<group>"; };
 		CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRAuthenticationViewController.swift; sourceTree = "<group>"; };
 		CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +167,7 @@
 		CB2F5DBE1AE7173800A1E0A6 /* ContributionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				CB56A6641B0BC06C0018E0DC /* ParseHelper.swift */,
 				CB81E3C21AFAD5D800D79DC0 /* QRGenerator.swift */,
 				CB2F5DC11AE7173800A1E0A6 /* AppDelegate.swift */,
 				CB2F5DC81AE7173A00A1E0A6 /* Main.storyboard */,
@@ -166,6 +178,7 @@
 				CB2F5DCD1AE7173B00A1E0A6 /* LaunchScreen.xib */,
 				CB2F5DC31AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld */,
 				CB2F5DBF1AE7173800A1E0A6 /* Supporting Files */,
+				CB56A66A1B0BF9700018E0DC /* ContributionCenter-Bridging-Header.h */,
 			);
 			path = ContributionCenter;
 			sourceTree = "<group>";
@@ -198,6 +211,9 @@
 		CB6AF0011AF8001F00529859 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CB56A6601B0AA2AD0018E0DC /* EditListDetailViewController.swift */,
+				CB56A65E1B0AA1950018E0DC /* ListDetailViewController.swift */,
+				CB56A65A1B0A9C290018E0DC /* ListViewController.swift */,
 				CB56A6571AFFDE7B0018E0DC /* CheckInViewController.swift */,
 				CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */,
 				CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */,
@@ -211,6 +227,7 @@
 		CB9219FF1AFEC39100E4A6F5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CB56A65C1B0AA11A0018E0DC /* ListTableViewCell.swift */,
 				CB9219FD1AFEC38900E4A6F5 /* MenuTableViewCell.swift */,
 			);
 			name = Views;
@@ -318,15 +335,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB6EF5E61AEAD02100508E2F /* LogInViewController.swift in Sources */,
+				CB56A65F1B0AA1950018E0DC /* ListDetailViewController.swift in Sources */,
 				CB6AF0001AF6C93900529859 /* QRAuthenticationViewController.swift in Sources */,
+				CB56A65B1B0A9C290018E0DC /* ListViewController.swift in Sources */,
 				CB2F5DC51AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld in Sources */,
 				CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */,
 				CB9219FE1AFEC38900E4A6F5 /* MenuTableViewCell.swift in Sources */,
+				CB56A6651B0BC06C0018E0DC /* ParseHelper.swift in Sources */,
 				CB27C91A1AFABC7300DF3B61 /* QRBaseViewController.swift in Sources */,
 				CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */,
 				CB2F5DC21AE7173800A1E0A6 /* AppDelegate.swift in Sources */,
 				CB81E3C31AFAD5D800D79DC0 /* QRGenerator.swift in Sources */,
 				CB56A6581AFFDE7B0018E0DC /* CheckInViewController.swift in Sources */,
+				CB56A65D1B0AA11A0018E0DC /* ListTableViewCell.swift in Sources */,
+				CB56A6611B0AA2AD0018E0DC /* EditListDetailViewController.swift in Sources */,
 				CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -456,6 +478,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -465,6 +488,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ContributionCenter/ContributionCenter-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -472,6 +497,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -481,6 +507,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ContributionCenter/ContributionCenter-Bridging-Header.h";
 			};
 			name = Release;
 		};
