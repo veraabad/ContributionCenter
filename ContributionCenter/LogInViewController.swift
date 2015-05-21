@@ -23,18 +23,12 @@ class LogInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Testing of Parse service
-        /*let testObject = PFObject(className: "TestObject")
-        testObject["foo"] = "bar"
-        testObject.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
-            println("Object has been saved.")
-        } */
-        
         // Load one user
-        var userInfo = PFObject(className: "UserInfo")
-        userInfo["firstName"] = "Abad"
+        /*
+        var userInfo = PFObject(className: "SisterInfo")
+        userInfo["firstName"] = "Cristina"
         userInfo["lastName"] = "Vera"
-        userInfo["userEmail"] = "abad_vera@me.com"
+        userInfo["userEmail"] = "gutierrezdiana.cv@gmail.com"
         userInfo.saveInBackgroundWithBlock{ (success: Bool, error: NSError?) -> Void in
             if success {
                 println("User info saved")
@@ -43,8 +37,9 @@ class LogInViewController: UIViewController {
             else {
                 println("Error: \(error?.userInfo)")
             }
-        }
-
+        }*/
+        var sisterIDObj = ObjectIdDictionary()
+        var sisterDict = sisterIDObj.sistersDictionary
         
         // Find out which device were on
         deviceInterface = UIDevice.currentDevice().userInterfaceIdiom

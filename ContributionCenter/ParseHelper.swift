@@ -79,11 +79,14 @@ class MapPoint: PFObject, PFSubclassing {
 
 // Class holds an NSDictionary for usersName and objectId
 class ObjectIdDictionary {
+    
+    // Class name for this PFObject
     let className:String! = "ObjectIdDictionary"
+    
     // Name to call and save sistersDict
     let sistersString:String! = "sistersInfo"
     // Object ID  for sisters Dict saved on parse.com
-    let sisterDictID:String! = "123"
+    let sisterDictID:String! = "kR40tTKTma"
     // PFObject needed to interface with parse.com
     var sistersDictObject: PFObject?
     // SistersDict with objectID and their respective usernames
@@ -98,27 +101,65 @@ class ObjectIdDictionary {
     // MapPointDict with objectID and their respective mapPoint
     var mapPointDictionary = [Int: String]()
     
+    // At initialization obtain objectId dictionaries for sisters and mapPoints
     init() {
         var query = PFQuery(className: className)
+        
+        // Get sister dictionary
         query.getObjectInBackgroundWithId(sisterDictID, block: {(sistersDict: PFObject?, error: NSError?) -> Void in
             if sistersDict != nil {
                 self.sistersDictObject = sistersDict
-                self.sistersDictionary = self.sistersDictObject![self.sistersString] as! [String:String]
+                self.sistersDictionary = self.sistersDictObject?[self.sistersString] as! [String:String]
+                // Just a test of the services
                 println("Retrieved sisters Dict")
+                if let sisterID = self.sistersDictionary["Cristina Vera"] {
+                    println("Found sister ID: \(sisterID)")
+                }
             }
             else {
-                println("Error \(error?.localizedDescription)")
+                println("Error \(error?.userInfo)")
             }
         })
+        
+        // Get mapPoint dictionary
+        /*
+        query.getObjectInBackgroundWithId(mapPointDictID, block: {(mapPointDict: PFObject?, error: NSError?) -> Void in
+            if mapPointDict != nil {
+                self.mapPointDictObject = mapPointDict
+                self.mapPointDictionary = self.mapPointDictObject?[self.sistersString] as! [Int: String]
+                println("Retrieved mapPoint Dict")
+            }
+            else {
+                println("Error \(error?.userInfo)")
+            }
+        })*/
     }
     
+    // Save a new object ID for a sister
     func saveSisterID(objectID: String, sisterName: String) {
         sistersDictionary = [sisterName: objectID]
         sistersDictObject?[sistersString] = sistersDictionary
+        sistersDictObject?.saveInBackgroundWithBlock{(success:Bool, error: NSError?) -> Void in
+            if success {
+                println("Saved objectID for sister")
+            }
+            else {
+                println("Error: \(error?.userInfo)")
+            }
+        }
     }
     
+    // Save a new objectID for a mapPoint
     func saveMapPontID(objectID: String, mapPointNumber: Int) {
         mapPointDictionary = [mapPointNumber: objectID]
         mapPointDictObject?[mapPointString] = mapPointDictionary
+        mapPointDictObject?.saveInBackgroundWithBlock{(success:Bool, error: NSError?) -> Void in
+            if success {
+                println("Saved objectID for mapPoint")
+            }
+            else {
+                println("Error \(error?.userInfo)")
+            }
+        }
     }
 }
