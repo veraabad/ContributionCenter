@@ -123,7 +123,6 @@ class SisterInfo {
     
     func getSisterInfo(sisName: String) {
         // Retrieve the object id that pertains to the sisters name
-        var sisObjID:String? = String()
         // Enter dispatch group to see when it will be done
         dispatch_group_enter(fetchExistingSis)
         ObjectIdDictionary.sharedInstance.getSisterId(sisName) {(sisID) -> Void in
@@ -227,6 +226,8 @@ class BoxesOut {
 class MapPoint {
     private var mapPointObject: PFObject?
     private let className:String! = "MapPoint"
+    // Lets us know when certain async tasks have completed
+    private var fetchExistingMapPoint = dispatch_group_create()
     
     // Holds mapPoint data
     var mapPoint: NSData? {
@@ -254,22 +255,26 @@ class MapPoint {
     
     // Retrieve an existing mapPointObject if it does exist
     func getMapPointInfo(mapPointNum: Int) {
+        // Enter dispatch group to see when it will be done
         // Retrieve the object id that pertains to the mapPointNumber
-        var mapPointObjID = ObjectIdDictionary.sharedInstance.getMapPointId(mapPointNum)
-        if mapPointObjID != nil {
-            var query = PFQuery(className: className)
-            query.getObjectInBackgroundWithId(mapPointObjID!, block: {(mapPointObj: PFObject?, error: NSError?) -> Void in
-                if mapPointObj != nil {
-                    self.mapPointObject = mapPointObj
-                }
-                else {
-                    println("Error: \(error?.userInfo)")
-                }
-            })
-        }
-        // If no object ID found then the mapPoint has not been saved
-        else {
-            println("Error mapPoint doesn't exist")
+        dispatch_group_enter(fetchExistingMapPoint) // Enter dispatch group
+        ObjectIdDictionary.sharedInstance.getMapPointId(mapPointNum) {(mapPointID) -> Void in
+            if mapPointID != nil {
+                var query = PFQuery(className: self.className)
+                query.getObjectInBackgroundWithId(mapPointID!, block: {(mapPointObj: PFObject?, error: NSError?) -> Void in
+                    if mapPointObj != nil {
+                        self.mapPointObject = mapPointObj
+                    }
+                    else {
+                        println("Error: \(error?.userInfo)")
+                    }
+                    dispatch_group_leave(self.fetchExistingMapPoint) // Leave dispatch group
+                })
+            }
+                // If no object ID found then the mapPoint has not been saved
+            else {
+                println("Error mapPoint doesn't exist")
+            }
         }
     }
     
@@ -291,7 +296,9 @@ class MapPoint {
 class ObjectIdDictionary {
     
     // Find out when were done fetching sisDictID
-    var fetchSisDictID = dispatch_group_create()
+    private var fetchSisDictID = dispatch_group_create()
+    // Find out when were done fetching mapPointDictID
+    private var fetchMapPointDictID = dispatch_group_create()
     
     // Class name for this PFObject
     let className:String! = "ObjectIdDictionary"
@@ -335,7 +342,7 @@ class ObjectIdDictionary {
         getSisterIdDict()
         
         // Obtain mapPointIdDict if available
-        updateMapPointIdDict()
+        getMapPointIdDict()
     }
     
     // Obtain sister object ID
@@ -378,7 +385,7 @@ class ObjectIdDictionary {
         }
     }
     
-    func getSisterIdDict() {
+    private func getSisterIdDict() {
         // Get sister dictionary
         var query = PFQuery(className: className)
         //dispatch_group_enter(fetchSisDictID)
@@ -408,48 +415,43 @@ class ObjectIdDictionary {
         }
     }
     
-    func getMapPointId(mapPointNumber: Int) -> String? {
-        var mapPointID:String? = String()
-        // Place in seperate thread in order to not slow main thread
-        dispatch_async(GlobalUserInitiatedQueue) {
-            // Create dispatch group to wait until mapPointDictionary has been updated
-            var fetchDictionary = dispatch_group_create()
-            
-            // Group created
-            dispatch_group_enter(fetchDictionary)
-            self.updateMapPointIdDict()
-            dispatch_group_leave(fetchDictionary) // Group ends
-            
-            // Get the mapPoint object ID for mapPoint number
-            mapPointID = self.mapPointDictionary?[String(mapPointNumber)]
-            
-            // Wait for group to finish indefinitely
-            dispatch_group_wait(fetchDictionary, DISPATCH_TIME_FOREVER)
-            /*
-            dispatch_async(GlobalMainQueue) {
-                return mapPointID // Once the dispatch group is done then return the objectID
-            } */
+    func getMapPointId(mapPointNumber: Int, success:(mapPointID:String?) -> Void) {
+        // Update the mapPointIDDictionary just in case it has been updated
+        updateMapPointIdDict()
+        
+        // Wait until the mapPointDictionary has been updated
+        dispatch_group_notify(fetchMapPointDictID, GlobalMainQueue) {
+            // Get the mapPoint object ID
+            if let mapPointId = self.mapPointDictionary?[String(mapPointNumber)] {
+                println("Got the mapPoint ID: \(mapPointId)")
+                success(mapPointID: mapPointId)
+            }
+            else {
+                success(mapPointID: nil)
+            }
         }
-        return mapPointID
+    }
+    
+    private func updateMapPointIdDict() {
+        // Get mapPoint dictionary
+        // Enter into a dispatch group to find out when the block will finish
+        dispatch_group_enter(fetchMapPointDictID)
+        mapPointDictObject?.fetchInBackgroundWithBlock{(mapPointDictObj:PFObject?, error:NSError?) -> Void in
+            if mapPointDictObj != nil {
+                self.mapPointDictObject = mapPointDictObj
+                if let mapDict = self.mapPointDictObject?[self.mapPointString] as? [String:String] {
+                    self.mapPointDictionary = mapDict
+                    println("Got the mapPoint Dictionary")
+                }
+            }
+            else {
+                println("Error: \(error?.userInfo)")
+            }
+            dispatch_group_leave(self.fetchMapPointDictID) // Leave dispatch group
+        }
     }
     
     private func getMapPointIdDict() {
-        // Get mapPoint dictionary
-        var query = PFQuery(className: className)
-        var mapPointObj = query.getObjectWithId(mapPointDictID)
-        if mapPointObj != nil {
-            mapPointDictObject = mapPointObj
-            mapPointDictionary = mapPointDictObject?[mapPointString] as? [String: String]
-            if mapPointDictionary != nil {
-                println("Retrieved mapPoint Dict")
-            }
-            else {
-                println("MapPoint dictionary not available")
-            }
-        }
-    }
-    
-    func updateMapPointIdDict() {
         // Get mapPoint dictionary
         var query = PFQuery(className: className)
         query.getObjectInBackgroundWithId(mapPointDictID, block: {(mapPointDict: PFObject?, error: NSError?) -> Void in

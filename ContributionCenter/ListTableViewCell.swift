@@ -9,7 +9,14 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
-
+    // Labels shown on tableviewCell
+    @IBOutlet weak var firstNameLabel: UILabel!
+    @IBOutlet weak var lastNameLabel: UILabel!
+    // Buttons shown on tableViewCell
+    @IBOutlet weak var fridayBttn: UIButton!
+    @IBOutlet weak var saturdayBttn: UIButton!
+    @IBOutlet weak var sundayBttn: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
