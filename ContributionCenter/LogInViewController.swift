@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Abad Vera. All rights reserved.
 //
 import UIKit
-import Parse
 import LocalAuthentication
 
 
@@ -20,9 +19,10 @@ class LogInViewController: UIViewController {
     // Device interface
     var deviceInterface:UIUserInterfaceIdiom!
     
+    var objectid:String!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Load one user
         /*
         var userInfo = PFObject(className: "SisterInfo")
@@ -38,8 +38,6 @@ class LogInViewController: UIViewController {
                 println("Error: \(error?.userInfo)")
             }
         }*/
-        var sisterIDObj = ObjectIdDictionary()
-        var sisterDict = sisterIDObj.sistersDictionary
         
         // Find out which device were on
         deviceInterface = UIDevice.currentDevice().userInterfaceIdiom
@@ -58,7 +56,7 @@ class LogInViewController: UIViewController {
         procederBttn.addSubview(blur)
         procederBttn.sendSubviewToBack(blur)
     }
-    
+
     // Update frame of blur with rotation
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         blur.frame = CGRectMake(0, 0, procederBttn.frame.width, procederBttn.frame.height)
@@ -94,8 +92,25 @@ class LogInViewController: UIViewController {
         self.showViewController(viewC, sender: self)
     }
     
+    func test(sisObject: SisterInfo?) {
+        println("Name: \(sisObject?.firstName)")
+    }
+    
     // Action for when the "Proceder" button has been pressed
     @IBAction func procedeAction(sender: AnyObject) {
+        // Try saving a sisterInfo
+        var sisInfo:SisterInfo!
+        sisInfo = SisterInfo(sisterName: "Cecilia Vera") {(success:Bool) -> Void in
+            if success {
+                sisInfo.phoneNumber = 7605606770
+                println("Name is: \(sisInfo.firstName)")
+            }
+            else {
+                
+            }
+        }
+        sisInfo.saveSisterInfo()
+        
         // If iPhone then user fingerprint to login
         if deviceInterface == .Phone {
             requestFingerprintAuthentication()

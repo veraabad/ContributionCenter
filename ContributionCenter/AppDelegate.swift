@@ -22,11 +22,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // ****Parse.com
         Parse.enableLocalDatastore()
         
+        // Initialize subclasses of PFObject
+        /* For now no subclasses of PFObject will be used
+        SisterInfo.initialize()
+        BoxesOut.initialize()
+        MapPoint.initialize() */
+        
+        
         // Initialize Parse.
         Parse.setApplicationId("pD8c4Kspdh6xvNTBpexnS5mLnTEdx4Svg9E4X3TL", clientKey: "7aiYiMKb5Gs6Fx4fS5c641bzVy2q2kTYlNvxSSXW")
         
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        
+        ObjectIdDictionary.sharedInstance
+        
         return true
     }
 
