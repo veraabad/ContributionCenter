@@ -301,23 +301,23 @@ class ObjectIdDictionary {
     private var fetchMapPointDictID = dispatch_group_create()
     
     // Class name for this PFObject
-    let className:String! = "ObjectIdDictionary"
+    private let className:String! = "ObjectIdDictionary"
     
     // Name to call and save sistersDict
-    let sistersString:String! = "sistersInfo"
+    private let sistersString:String! = "sistersInfo"
     // Object ID  for sisters Dict saved on parse.com
-    let sisterDictID:String! = "kR40tTKTma"
+    private let sisterDictID:String! = "kR40tTKTma"
     // PFObject needed to interface with parse.com
-    var sistersDictObject: PFObject?
+    private var sistersDictObject: PFObject?
     // SistersDict with objectID and their respective usernames
     var sistersDictionary = [String: String]()
     
     // MapPoint dictionary to calIntl and save mapPointDict
-    let mapPointString:String! = "mapPointInfo"
+    private let mapPointString:String! = "mapPointInfo"
     // Object ID for mapPoint Dict saved on parse.com
-    let mapPointDictID:String! = "sXiNzEEp45"
+    private let mapPointDictID:String! = "sXiNzEEp45"
     // PFObject needed to interface with parse.com
-    var mapPointDictObject: PFObject?
+    private var mapPointDictObject: PFObject?
     // MapPointDict with objectID and their respective mapPoint
     var mapPointDictionary:[String: String]? = [String: String]()
     
@@ -366,6 +366,32 @@ class ObjectIdDictionary {
     }
     
     // Update the sisterDictObject just in case there has been an addition
+    func updateSisterIdDict(success:(updateSuccess:Bool, sistersDict: [String:String]?) -> Void) {
+        dispatch_group_enter(fetchSisDictID)
+        sistersDictObject?.fetchInBackgroundWithBlock{(sisDict: PFObject?, error:NSError?) -> Void in
+            if sisDict != nil {
+                self.sistersDictObject = sisDict
+                if let sisDict = self.sistersDictObject?[self.sistersString] as? [String:String] {
+                    self.sistersDictionary = sisDict
+                    // If we could obtain the dictionary then pass that back
+                    success(updateSuccess: true, sistersDict: self.sistersDictionary)
+                }
+                // Test the dictionary
+                println("Retrieved sisters Dict")
+                if let sisterID = self.sistersDictionary["Cecilia Vera"] {
+                    println("Found sister ID: \(sisterID)")
+                }
+            }
+            else {
+                println("Error: \(error?.userInfo)")
+                // If not successful then send results back
+                success(updateSuccess: false, sistersDict: nil)
+            }
+            dispatch_group_leave(self.fetchSisDictID)
+        }
+    }
+    
+    // Update the sisterDictObject just in case there has been an addition
     private func updateSisterIdDict() {
         dispatch_group_enter(fetchSisDictID)
         sistersDictObject?.fetchInBackgroundWithBlock{(sisDict: PFObject?, error:NSError?) -> Void in
@@ -379,7 +405,7 @@ class ObjectIdDictionary {
                 }
             }
             else {
-                println("Erro: \(error?.userInfo)")
+                println("Error: \(error?.userInfo)")
             }
             dispatch_group_leave(self.fetchSisDictID)
         }

@@ -1150,8 +1150,13 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="bau-Wt-kmh">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="BR8-I2-qnG">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" restorationIdentifier="ListCell" selectionStyle="default" indentationWidth="10" id="H5Z-gI-Jhp" customClass="ListTableViewCell" customModule="ContributionCenter" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" restorationIdentifier="ListCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListCell" id="H5Z-gI-Jhp" customClass="ListTableViewCell" customModule="ContributionCenter" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="H5Z-gI-Jhp" id="qBq-xH-dv3">
@@ -1343,18 +1348,22 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="zff-yH-gxw" id="Ary-nC-I6N"/>
+                                    <outlet property="delegate" destination="zff-yH-gxw" id="ajJ-qy-UWn"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="XDM-gL-fiD" firstAttribute="top" secondItem="abs-N3-DKE" secondAttribute="top" id="4ju-Se-DUy"/>
                             <constraint firstItem="yjB-h7-uKG" firstAttribute="top" secondItem="bau-Wt-kmh" secondAttribute="bottom" id="Cgj-dp-eyF"/>
                             <constraint firstItem="bau-Wt-kmh" firstAttribute="top" secondItem="RF8-5G-NAw" secondAttribute="bottom" id="FJe-UE-Eho"/>
                             <constraint firstAttribute="trailingMargin" secondItem="bau-Wt-kmh" secondAttribute="trailing" constant="-16" id="IYh-fK-84Z"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="XDM-gL-fiD" secondAttribute="trailing" constant="-16" id="SGn-oZ-yXy"/>
-                            <constraint firstItem="yjB-h7-uKG" firstAttribute="top" secondItem="XDM-gL-fiD" secondAttribute="bottom" id="ZgF-fw-rY7"/>
+                            <constraint firstAttribute="trailing" secondItem="XDM-gL-fiD" secondAttribute="trailing" id="NTq-60-UFh"/>
+                            <constraint firstItem="yjB-h7-uKG" firstAttribute="top" secondItem="XDM-gL-fiD" secondAttribute="bottom" id="bd3-vI-g5U"/>
                             <constraint firstItem="bau-Wt-kmh" firstAttribute="leading" secondItem="abs-N3-DKE" secondAttribute="leadingMargin" constant="-16" id="bjD-iv-Xdu"/>
-                            <constraint firstItem="XDM-gL-fiD" firstAttribute="leading" secondItem="abs-N3-DKE" secondAttribute="leadingMargin" constant="-16" id="dLA-xT-4KQ"/>
-                            <constraint firstItem="XDM-gL-fiD" firstAttribute="top" secondItem="abs-N3-DKE" secondAttribute="topMargin" id="qy5-rx-Ccf"/>
+                            <constraint firstItem="XDM-gL-fiD" firstAttribute="leading" secondItem="abs-N3-DKE" secondAttribute="leading" id="jkG-Y4-tKL"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
@@ -1362,14 +1371,14 @@
                                 <exclude reference="bau-Wt-kmh"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="SGn-oZ-yXy"/>
-                                <exclude reference="dLA-xT-4KQ"/>
-                                <exclude reference="qy5-rx-Ccf"/>
-                                <exclude reference="Cgj-dp-eyF"/>
-                                <exclude reference="ZgF-fw-rY7"/>
+                                <exclude reference="4ju-Se-DUy"/>
+                                <exclude reference="NTq-60-UFh"/>
+                                <exclude reference="jkG-Y4-tKL"/>
                                 <exclude reference="FJe-UE-Eho"/>
                                 <exclude reference="IYh-fK-84Z"/>
                                 <exclude reference="bjD-iv-Xdu"/>
+                                <exclude reference="Cgj-dp-eyF"/>
+                                <exclude reference="bd3-vI-g5U"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -1378,18 +1387,21 @@
                                 <include reference="bau-Wt-kmh"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="SGn-oZ-yXy"/>
-                                <include reference="dLA-xT-4KQ"/>
-                                <include reference="qy5-rx-Ccf"/>
-                                <include reference="Cgj-dp-eyF"/>
-                                <include reference="ZgF-fw-rY7"/>
+                                <include reference="4ju-Se-DUy"/>
+                                <include reference="NTq-60-UFh"/>
+                                <include reference="jkG-Y4-tKL"/>
                                 <include reference="FJe-UE-Eho"/>
                                 <include reference="IYh-fK-84Z"/>
                                 <include reference="bjD-iv-Xdu"/>
+                                <include reference="Cgj-dp-eyF"/>
+                                <include reference="bd3-vI-g5U"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="List" id="jJ5-bS-Zei"/>
+                    <connections>
+                        <outlet property="listTableView" destination="bau-Wt-kmh" id="XBU-II-lsx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nyq-bG-0JM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1505,6 +1517,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pBP-AP-xEH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

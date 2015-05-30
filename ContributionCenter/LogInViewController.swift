@@ -99,17 +99,6 @@ class LogInViewController: UIViewController {
     // Action for when the "Proceder" button has been pressed
     @IBAction func procedeAction(sender: AnyObject) {
         // Try saving a sisterInfo
-        var sisInfo:SisterInfo!
-        sisInfo = SisterInfo(sisterName: "Cecilia Vera") {(success:Bool) -> Void in
-            if success {
-                sisInfo.phoneNumber = 7605606770
-                println("Name is: \(sisInfo.firstName)")
-            }
-            else {
-                
-            }
-        }
-        sisInfo.saveSisterInfo()
         
         // If iPhone then user fingerprint to login
         if deviceInterface == .Phone {

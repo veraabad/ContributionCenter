@@ -60,21 +60,25 @@ class MenuViewController: UIViewController,UITableViewDataSource, UITableViewDel
         // Bring up view depending on which cell chosen
         let cell = menuTableView.cellForRowAtIndexPath(indexPath) as! MenuTableViewCell
         println("Title: \(cell.menuItemLabel.text)")
-        switch indexPath.row {
-        case 0:
+        let menuItem:String! = cell.menuItemLabel.text
+        switch menuItem {
+        case "Sign In iPad":
             removeSelectionHighlight(indexPath)
             if let vc = self.storyboard?.instantiateViewControllerWithIdentifier("QRNavController") as? UINavigationController {
                 parentVC.moveMenu(vc)
             }
             
-        case 1:
+        case "QR Check In":
             removeSelectionHighlight(indexPath)
             if let vc = self.storyboard?.instantiateViewControllerWithIdentifier("CheckInNavController") as? UINavigationController {
                 parentVC.moveMenu(vc)
             }
-        case 2:
-            println("")
-        case 3:
+        case "List":
+            removeSelectionHighlight(indexPath)
+            if let vc = self.storyboard?.instantiateViewControllerWithIdentifier("ListNavController") as? UINavigationController {
+                parentVC.moveMenu(vc)
+            }
+        case "Hi":
             println("")
         default:
             println("Not a viable cell item")

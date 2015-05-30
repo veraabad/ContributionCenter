@@ -26,12 +26,17 @@ class CheckInViewController: QRBaseViewController {
     // If there is a parent view then save it here
     var parentVC:AVSideBarController!
     
+    var delaySec = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Setup views
         setPortraitViews(cameraViewP, otherView: infoViewP)
         setLandscapeViews(cameraViewL, otherView: infoViewL)
+        
+        // Make sure nameLabel is cleared
+        nameLabelP.text = ""
         
         // Check for instance of parent and setup navController
         if let vc = self.navigationController?.parentViewController as? AVSideBarController {
@@ -61,10 +66,19 @@ class CheckInViewController: QRBaseViewController {
         if qrResponse == "" {
             return
         }
+
+        else if qrResponse == "Abad Vera"{
+            captureSession.stopRunning()
+            println("Success")
+        }
         else {
-            if qrResponse == "Abad Vera" {
-                captureSession.stopRunning()
-                println("Success")
+            nameLabelP.text = qrResponse
+            captureSession.stopRunning()
+            let delay = Double(delaySec) * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                println("Camera running again")
+                self.captureSession.startRunning()
             }
         }
     }
