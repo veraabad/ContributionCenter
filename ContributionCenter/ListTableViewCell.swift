@@ -17,6 +17,9 @@ class ListTableViewCell: UITableViewCell {
     @IBOutlet weak var saturdayBttn: UIButton!
     @IBOutlet weak var sundayBttn: UIButton!
     
+    // Holds sisterinfo to pass to ListDetailVC
+    var sisInfo:SisterInfo?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -81,6 +81,10 @@ class SisterInfo {
         set (boxes) { sisterObject?["boxesAssigned"] = boxes }
     }
     
+    var dirty: Bool? {
+        return sisterObject?.isDirty()
+    }
+    
     
     // At initialization with existing sister
     init(sisterName: String, withBlock:(success:Bool) -> Void) {
@@ -105,7 +109,7 @@ class SisterInfo {
     }
     
     // Fetch any new changes that have been saved on the server
-    func fetchSisterInfo() {
+    func fetchSisterInfo(block:(success:Bool) -> Void) {
         dispatch_group_enter(fetchExistingSis)
         sisterObject?.fetchInBackgroundWithBlock{(successObj:PFObject?, error:NSError?) -> Void in
             if successObj != nil {
@@ -113,9 +117,11 @@ class SisterInfo {
                 if let boxes = self.boxesAssigned {
                     self.boxesAssignedHolder = boxes
                 }
+                block(success: true)
             }
             else {
                 println("Error: \(error?.userInfo)")
+                block(success: false)
             }
             dispatch_group_leave(self.fetchExistingSis)
         }

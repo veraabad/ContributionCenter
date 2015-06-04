@@ -26,7 +26,7 @@ class CheckInViewController: QRBaseViewController {
     // If there is a parent view then save it here
     var parentVC:AVSideBarController!
     
-    var delaySec = 1
+    var delaySec = 500
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,18 +66,14 @@ class CheckInViewController: QRBaseViewController {
         if qrResponse == "" {
             return
         }
-
-        else if qrResponse == "Abad Vera"{
-            captureSession.stopRunning()
-            println("Success")
-        }
         else {
             nameLabelP.text = qrResponse
             captureSession.stopRunning()
-            let delay = Double(delaySec) * Double(NSEC_PER_SEC)
+            let delay = Double(delaySec) * Double(NSEC_PER_MSEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
                 println("Camera running again")
+                self.qrFrameView.frame = CGRectZero // Removes the qrFrameView from sight once camera starts up again
                 self.captureSession.startRunning()
             }
         }

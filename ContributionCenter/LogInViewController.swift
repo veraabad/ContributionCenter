@@ -84,6 +84,11 @@ class LogInViewController: UIViewController {
                 }
             })
         }
+        else {
+            println("We're in the simulator")
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("SideBarController") as! AVSideBarController
+            self.showViewController(vc, sender: self)
+        }
     }
     
     func showVC(stringID: String) {
@@ -98,8 +103,6 @@ class LogInViewController: UIViewController {
     
     // Action for when the "Proceder" button has been pressed
     @IBAction func procedeAction(sender: AnyObject) {
-        // Try saving a sisterInfo
-        
         // If iPhone then user fingerprint to login
         if deviceInterface == .Phone {
             requestFingerprintAuthentication()

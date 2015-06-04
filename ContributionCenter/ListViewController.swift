@@ -99,12 +99,21 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             println("First name: \(sis.firstName)")
             cell.firstNameLabel.text = sis.firstName
             cell.lastNameLabel.text = sis.lastName
+            cell.sisInfo = sis
         }
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         println("Row selected is: \(indexPath.row)")
+        let cell = listTableView.cellForRowAtIndexPath(indexPath) as! ListTableViewCell
+        
+        // Instantiante view controller
+        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("ListDetailVC") as! ListDetailViewController
+        if let sisInfo = cell.sisInfo {
+            vc.sisterInfo = sisInfo
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
 }
