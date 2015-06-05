@@ -16,6 +16,10 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var sisDictArray:[String]? = [String]()
     var sistersArray:[SisterInfo]? = [SisterInfo]()
     
+    // Color
+    var colorBack = UIColor(red: 10/255, green: 206/255, blue: 225/255, alpha: 1.0)
+    var viewAlpha:CGFloat! = 0.2
+    
     // If a parent VC is found store it here
     var parentVC:AVSideBarController!
     
@@ -85,6 +89,29 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    func createBlur(dateBttn:UIButton) {
+        var cornerRad:CGFloat = dateBttn.frame.height / 2
+        // Blur for background of dates
+        var blur:UIVisualEffectView! = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+        blur.frame = CGRectMake(0, 0, dateBttn.frame.height, dateBttn.frame.height)
+        blur.userInteractionEnabled = false
+        blur.layer.cornerRadius = cornerRad
+        blur.clipsToBounds = true
+        // Give it some color
+        var backView:UIView! = UIView(frame: CGRectMake(0, 0, dateBttn.frame.height, dateBttn.frame.height))
+        backView.backgroundColor = colorBack
+        backView.alpha = viewAlpha
+        backView.layer.cornerRadius = cornerRad
+        backView.clipsToBounds = true
+        backView.userInteractionEnabled = false
+        
+        // Add subviews
+        dateBttn.addSubview(backView)
+        dateBttn.addSubview(blur)
+        dateBttn.sendSubviewToBack(backView)
+        dateBttn.sendSubviewToBack(blur)
+    }
+    
     // MARK:
     // TableView functions
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -96,10 +123,20 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.firstNameLabel.text = ""
         cell.lastNameLabel.text = ""
         if let sis = sistersArray?[indexPath.row] {
-            println("First name: \(sis.firstName)")
             cell.firstNameLabel.text = sis.firstName
             cell.lastNameLabel.text = sis.lastName
             cell.sisInfo = sis
+            // Check for dates
+            // If dates are available then show it on cell
+            if sis.fridayTime != nil {
+                createBlur(cell.fridayBttn)
+            }
+            if sis.saturdayTime != nil {
+                createBlur(cell.saturdayBttn)
+            }
+            if sis.sundayTime != nil {
+                createBlur(cell.sundayBttn)
+            }
         }
         return cell
     }

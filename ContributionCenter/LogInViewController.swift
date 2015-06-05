@@ -15,6 +15,12 @@ class LogInViewController: UIViewController {
     
     // Blur for background of button
     var blur:UIVisualEffectView!
+    var backView:UIView!
+    
+    // Color
+    var colorBack = UIColor(red: 10/255, green: 206/255, blue: 225/255, alpha: 1.0)
+    // Corner radius
+    var cornerRad:CGFloat! = 2
     
     // Device interface
     var deviceInterface:UIUserInterfaceIdiom!
@@ -23,21 +29,6 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Load one user
-        /*
-        var userInfo = PFObject(className: "SisterInfo")
-        userInfo["firstName"] = "Cristina"
-        userInfo["lastName"] = "Vera"
-        userInfo["userEmail"] = "gutierrezdiana.cv@gmail.com"
-        userInfo.saveInBackgroundWithBlock{ (success: Bool, error: NSError?) -> Void in
-            if success {
-                println("User info saved")
-                println("Object ID: \(userInfo.objectId)")
-            }
-            else {
-                println("Error: \(error?.userInfo)")
-            }
-        }*/
         
         // Find out which device were on
         deviceInterface = UIDevice.currentDevice().userInterfaceIdiom
@@ -50,16 +41,27 @@ class LogInViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         // Add blurred background to UIButton
+        backView = UIView(frame: CGRectMake(0, 0, procederBttn.frame.width, procederBttn.frame.height))
+        backView.backgroundColor = colorBack
+        backView.alpha = 0.2
+        backView.layer.cornerRadius = cornerRad
+        backView.clipsToBounds = true
+        backView.userInteractionEnabled = false
         blur = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
         blur.frame = CGRectMake(0, 0, procederBttn.frame.width, procederBttn.frame.height)
+        blur.layer.cornerRadius = cornerRad
+        blur.clipsToBounds = true
         blur.userInteractionEnabled = false
+        procederBttn.addSubview(backView)
         procederBttn.addSubview(blur)
+        procederBttn.sendSubviewToBack(backView)
         procederBttn.sendSubviewToBack(blur)
     }
 
     // Update frame of blur with rotation
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         blur.frame = CGRectMake(0, 0, procederBttn.frame.width, procederBttn.frame.height)
+        backView.frame = CGRectMake(0, 0, procederBttn.frame.width, procederBttn.frame.height)
     }
     
     func requestFingerprintAuthentication() {

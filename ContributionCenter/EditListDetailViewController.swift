@@ -241,10 +241,13 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         case 6:
             sisInfo?.housePhone = textFieldHolder?.text.toInt()
         case 7:
+            textFieldHolder?.text = timeFormatter.stringFromDate(datePickerView.date)
             sisInfo?.fridayTime = datePickerView.date
         case 8:
+            textFieldHolder?.text = timeFormatter.stringFromDate(datePickerView.date)
             sisInfo?.saturdayTime = datePickerView.date
         case 9:
+            textFieldHolder?.text = timeFormatter.stringFromDate(datePickerView.date)
             sisInfo?.sundayTime = datePickerView.date
         default:
             println("Not a valid textField")
