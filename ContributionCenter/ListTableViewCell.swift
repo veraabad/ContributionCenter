@@ -20,6 +20,8 @@ class ListTableViewCell: UITableViewCell {
     // Holds sisterinfo to pass to ListDetailVC
     var sisInfo:SisterInfo?
     
+    var bttnBackBool:[String:Bool]? = [String:Bool]()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

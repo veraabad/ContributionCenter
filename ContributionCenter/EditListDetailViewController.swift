@@ -25,6 +25,12 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var saturdayDateTextField: UITextField!
     @IBOutlet weak var sundayDateTextField: UITextField!
     
+    // Color
+    var colorTfFilled = UIColor(red: 44/255, green: 64/255, blue: 116/255, alpha: 1.0)
+    var colorTfNotFilled = UIColor(red: 10/255, green: 206/255, blue: 225/255, alpha: 1.0)
+    var viewAlpha:CGFloat! = 0.2
+    var cornerRad:CGFloat! = 3
+    
     // Bottom constraint for dateUITextField
     @IBOutlet weak var dateTextFieldBottomConstraint: NSLayoutConstraint!
     // Top constraint
@@ -76,6 +82,9 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
             self.navigationItem.leftBarButtonItem = leftItem
             self.navigationItem.rightBarButtonItem = rightItem
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         // If we have the sister information then procede
         if sisInfo != nil {
             parseSisterInfo()
@@ -130,32 +139,95 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
     
     func parseSisterInfo() {
         if let firstName = sisInfo?.firstName {
-            firstNameTextField.text = firstName
+            if firstName != "" {
+                firstNameTextField.text = firstName
+                addBackground(firstNameTextField, filled: true)
+            }
+            else {
+                addBackground(firstNameTextField, filled: false)
+            }
         }
+        else {
+            addBackground(firstNameTextField, filled: false)
+        }
+        
         if let lastName = sisInfo?.lastName {
-            lastNameTextField.text = lastName
+            if lastName != "" {
+                lastNameTextField.text = lastName
+                addBackground(lastNameTextField, filled: true)
+            }
+            else {
+                addBackground(lastNameTextField, filled: false)
+            }
         }
+        else {
+            addBackground(lastNameTextField, filled: false)
+        }
+        
         if let congregation = sisInfo?.congregation {
-            congregationTextField.text = congregation
+            if congregation != "" {
+                congregationTextField.text = congregation
+                addBackground(congregationTextField, filled: true)
+            }
+            else {
+                addBackground(congregationTextField, filled: false)
+            }
         }
+        else {
+            addBackground(congregationTextField, filled: false)
+        }
+        
         if let email = sisInfo?.email {
-            emailTextField.text = email
+            if email != "" {
+                emailTextField.text = email
+                addBackground(emailTextField, filled: true)
+            }
+            else {
+                addBackground(emailTextField, filled: false)
+            }
         }
+        else {
+            addBackground(emailTextField, filled: false)
+        }
+        
         if let cellNumber = sisInfo?.phoneNumber {
             cellNumberTextField.text = String(cellNumber)
+            addBackground(cellNumberTextField, filled: true)
         }
+        else {
+            addBackground(cellNumberTextField, filled: false)
+        }
+        
         if let houseNumber = sisInfo?.housePhone {
             homeNumberTextField.text = String(houseNumber)
+            addBackground(homeNumberTextField, filled: true)
         }
+        else {
+            addBackground(homeNumberTextField, filled: false)
+        }
+        
         // Dates helping
         if let friday = sisInfo?.fridayTime {
             fridayDateTextField.text = timeFormatter.stringFromDate(friday)
+            addBackground(fridayDateTextField, filled: true)
         }
+        else {
+            addBackground(fridayDateTextField, filled: false)
+        }
+        
         if let saturday = sisInfo?.saturdayTime {
             saturdayDateTextField.text = timeFormatter.stringFromDate(saturday)
+            addBackground(saturdayDateTextField, filled: true)
+        }
+        else {
+            addBackground(saturdayDateTextField, filled: false)
         }
         if let sunday = sisInfo?.sundayTime {
             sundayDateTextField.text = timeFormatter.stringFromDate(sunday)
+            addBackground(sundayDateTextField, filled: true)
+        }
+        else {
+            addBackground(sundayDateTextField, filled: false)
         }
     }
     
@@ -169,6 +241,36 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         fridayDateTextField.text = ""
         saturdayDateTextField.text = ""
         sundayDateTextField.text = ""
+    }
+    
+    // Add a background to differentiate what has been filled in and what hasn't
+    func addBackground(textField: UITextField, filled:Bool) {
+        // Make blur
+        var blur:UIVisualEffectView! = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+        blur.frame = CGRectMake(0, 0, textField.frame.width, textField.frame.height)
+        blur.alpha = viewAlpha
+        blur.userInteractionEnabled = false
+        blur.layer.cornerRadius = cornerRad
+        blur.clipsToBounds = true
+        
+        // Make colored background
+        var backView:UIView! = UIView(frame: CGRectMake(0, 0, textField.frame.width, textField.frame.height))
+        backView.alpha = viewAlpha
+        backView.layer.cornerRadius = cornerRad
+        backView.clipsToBounds = true
+        backView.userInteractionEnabled = false
+        if filled {
+            backView.backgroundColor = colorTfFilled
+        }
+        else {
+            backView.backgroundColor = colorTfNotFilled
+        }
+        
+        // Add to textfield
+        textField.addSubview(backView)
+        textField.addSubview(blur)
+        textField.sendSubviewToBack(backView)
+        textField.sendSubviewToBack(blur)
     }
     
     func setDays() {
@@ -256,6 +358,27 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         checkIfChangesMade()
     }
     
+    func removeValue() {
+        textFieldHolder?.textColor = UIColor.whiteColor()
+        switch (textFieldHolder?.tag)! {
+        case 5:
+            sisInfo?.phoneNumber = nil
+        case 6:
+            sisInfo?.housePhone = nil
+        case 7:
+            sisInfo?.fridayTime = nil
+        case 8:
+            sisInfo?.saturdayTime = nil
+        case 9:
+            sisInfo?.sundayTime = nil
+        default:
+            println("Not a valid textField")
+        }
+        textFieldHolder?.text = ""
+        textFieldHolder?.resignFirstResponder()
+        checkIfChangesMade()
+    }
+    
     func cancelPicking() {
         // Remove any time info on the textfields and replace it with original
         parseSisterInfo()
@@ -268,8 +391,11 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         var doneButton = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: Selector("donePicking"))
         var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
         var cancelButton = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: Selector("cancelPicking"))
+        var removeButton = UIBarButtonItem(title: "Remove", style: .Plain, target: self, action: Selector("removeValue"))
         var items:[AnyObject]! = [AnyObject]()
         items.append(cancelButton)
+        items.append(flexibleSpace)
+        items.append(removeButton)
         items.append(flexibleSpace)
         items.append(doneButton)
         toolBar.items = items

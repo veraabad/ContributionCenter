@@ -99,10 +99,6 @@ class LogInViewController: UIViewController {
         self.showViewController(viewC, sender: self)
     }
     
-    func test(sisObject: SisterInfo?) {
-        println("Name: \(sisObject?.firstName)")
-    }
-    
     // Action for when the "Proceder" button has been pressed
     @IBAction func procedeAction(sender: AnyObject) {
         // If iPhone then user fingerprint to login

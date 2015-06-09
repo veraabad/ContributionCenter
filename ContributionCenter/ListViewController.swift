@@ -43,6 +43,11 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.navigationItem.leftBarButtonItem = rightItem
         }
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        // Reload data when view appears
+        listTableView.reloadData()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -79,6 +84,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 if success {
                     self.sistersArray! += [sisInfo!]
                     if self.sistersArray?.count == self.sisDictArray?.count {
+                        self.sortSisterArray()
                         self.listTableView.reloadData()
                     }
                 }
@@ -87,6 +93,28 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 }
             }
         }
+    }
+    
+    // Sort the sistesr Array
+    func sortSisterArray() {
+        sistersArray?.sort({s1, s2 in
+            if s1.lastName < s2.lastName {
+                return true // If lastName is greater then place it on top
+            }
+            // If lastNames are the same then go by firstName
+            else if s1.lastName == s2.lastName {
+                if s1.firstName < s2.firstName {
+                    return true
+                }
+                else {
+                    return false
+                }
+            }
+            // lastName in s2 is greater
+            else {
+                return false
+            }
+        })
     }
     
     func createBlur(dateBttn:UIButton) {
@@ -112,10 +140,21 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         dateBttn.sendSubviewToBack(blur)
     }
     
+    // Remove blur and color from button
+    func removeBlur(dateBttn:UIButton) {
+        var subViews = dateBttn.subviews
+        if subViews.count >= 3 {
+            var subView1 = subViews[0] as! UIView
+            var subView2 = subViews[1] as! UIView
+            subView1.removeFromSuperview()
+            subView2.removeFromSuperview()
+        }
+    }
+    
     // MARK:
     // TableView functions
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (sisDictArray?.count)!
+        return (sistersArray?.count)!
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -128,14 +167,31 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             cell.sisInfo = sis
             // Check for dates
             // If dates are available then show it on cell
-            if sis.fridayTime != nil {
+            if (sis.fridayTime != nil) && (cell.bttnBackBool?["Friday"] != true) {
                 createBlur(cell.fridayBttn)
+                cell.bttnBackBool?["Friday"] = true
             }
-            if sis.saturdayTime != nil {
+            else if (cell.bttnBackBool?["Friday"] == true) && (sis.fridayTime == nil) {
+                removeBlur(cell.fridayBttn)
+                cell.bttnBackBool?["Friday"] = false
+            }
+            
+            if (sis.saturdayTime != nil) && (cell.bttnBackBool?["Saturday"] != true) {
                 createBlur(cell.saturdayBttn)
+                cell.bttnBackBool?["Saturday"] = true
             }
-            if sis.sundayTime != nil {
+            else if (cell.bttnBackBool?["Saturday"] == true) && (sis.saturdayTime == nil){
+                removeBlur(cell.saturdayBttn)
+                cell.bttnBackBool?["Saturday"] = false
+            }
+            
+            if (sis.sundayTime != nil) && (cell.bttnBackBool?["Sunday"] != true) {
                 createBlur(cell.sundayBttn)
+                cell.bttnBackBool?["Sunday"] = true
+            }
+            else if (cell.bttnBackBool?["Sunday"] == true) && (sis.sundayTime == nil) {
+                removeBlur(cell.sundayBttn)
+                cell.bttnBackBool?["Sunday"] = false
             }
         }
         return cell

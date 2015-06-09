@@ -62,6 +62,7 @@ class ListDetailViewController: UIViewController, EditListDetailViewControllerDe
     // Save sisterInfo and parse it to display it
     func saveSisterInfo(controller: EditListDetailViewController, sisInfo: SisterInfo?) {
         sisterInfo = sisInfo
+        clearLabels()
         parseSisterInfo()
     }
     

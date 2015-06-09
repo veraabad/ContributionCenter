@@ -46,11 +46,25 @@ class SisterInfo {
     }
     var phoneNumber: Int? {
         get { return sisterObject?["phoneNumber"] as? Int }
-        set (number) { self.sisterObject?["phoneNumber"] = number }
+        set (number) {
+            if number == nil{
+                sisterObject?.removeObjectForKey("phoneNumber")
+            }
+            else {
+                self.sisterObject?["phoneNumber"] = number
+            }
+        }
     }
     var housePhone: Int? {
         get { return sisterObject?["housePhone"] as? Int }
-        set (number) { sisterObject?["housePhone"] = number }
+        set (number) {
+            if number == nil{
+                sisterObject?.removeObjectForKey("housePhone")
+            }
+            else {
+                self.sisterObject?["housePhone"] = number
+            }
+        }
     }
     var congregation: String? {
         get { return sisterObject?["congregation"] as? String }
@@ -58,15 +72,36 @@ class SisterInfo {
     }
     var fridayTime: NSDate? {
         get { return sisterObject?["fridayTime"] as? NSDate }
-        set (friday) { sisterObject?["fridayTime"] = friday }
+        set (friday) {
+            if friday == nil{
+                sisterObject?.removeObjectForKey("fridayTime")
+            }
+            else {
+                self.sisterObject?["fridayTime"] = friday
+            }
+        }
     }
     var saturdayTime: NSDate? {
         get { return sisterObject?["saturdayTime"] as? NSDate}
-        set (saturday) { sisterObject?["saturdayTime"] = saturday }
+        set (saturday) {
+            if saturday == nil{
+                sisterObject?.removeObjectForKey("saturdayTime")
+            }
+            else {
+                self.sisterObject?["saturdayTime"] = saturday
+            }
+        }
     }
     var sundayTime: NSDate? {
         get { return sisterObject?["sundayTime"] as? NSDate }
-        set (sunday) { sisterObject?["sundayTime"] = sunday }
+        set (sunday) {
+            if sunday == nil{
+                sisterObject?.removeObjectForKey("sundayTime")
+            }
+            else {
+                self.sisterObject?["sundayTime"] = sunday
+            }
+        }
     }
     var boxAssigned: Int? {
         get { return sisterObject?["boxAssigned"] as? Int}
@@ -187,6 +222,11 @@ class BoxesOut {
     // Variable to hold instances of the box info
     private var boxesObject: PFObject?
     private let className: String! = "BoxesOut"
+    // If an existing object is created then this is true
+    private var existing:Bool = false
+    
+    // Dispatch group to know when things are donw
+    private var fetchExistingBox = dispatch_group_create()
     
     var boxNumber: Int {
         get { return boxesObject?["boxNumber"] as! Int }
@@ -198,34 +238,96 @@ class BoxesOut {
         set (sisAssigned) { boxesObject?["sisterAssigned"] = sisAssigned }
     }
     
-    init(boxNum: Int?) {
-        if boxNum != nil {
-            getBoxInfo(boxNum!)
-        }
-        else {
-            boxesObject = PFObject(className: className)
+    var dirty: Bool? {
+        return boxesObject?.isDirty()
+    }
+    
+    // Initialize a new boxObject
+    init () {
+        boxesObject = PFObject(className: className)
+        existing = false
+    }
+    
+    // Initialize with an existing boxObject
+    init(boxNum: Int?, withBlock:(success:Bool) -> Void) {
+        getBoxInfo(boxNum!)
+        dispatch_group_notify(fetchExistingBox, GlobalMainQueue) {
+            // Box was found
+            if self.existing {
+                withBlock(success: true)
+            }
+            // Box was not found
+            else {
+                withBlock(success: false)
+            }
         }
     }
     
-    func updateBoxInfo() {
-        boxesObject?.fetch()
+    // Fetch any new changes that have been saved on the server
+    func fetchBoxInfo(block:(success:Bool) -> Void) {
+        dispatch_group_enter(fetchExistingBox)
+        boxesObject?.fetchInBackgroundWithBlock{(successObj:PFObject?, error:NSError?) -> Void in
+            if successObj != nil {
+                self.boxesObject = successObj
+                // Report the success
+                block(success: true)
+            }
+            else {
+                println("Error: \(error?.userInfo)")
+                block(success: false)
+            }
+            dispatch_group_leave(self.fetchExistingBox)
+        }
     }
     
     func getBoxInfo(boxNum: Int) {
         // Retrieve the object id that pertains to the boxinfo
+        // Enter dispatch group to see when it will be done
+        dispatch_group_enter(fetchExistingBox)
+        ObjectIdDictionary.sharedInstance.getBoxId(boxNum) {(boxID) -> Void in
+            if boxID != nil {
+                var query = PFQuery(className: self.className)
+                query.getObjectInBackgroundWithId(boxID!, block: {(boxObj: PFObject?, error:NSError?) -> Void in
+                    // If a PFObject is found then save it
+                    if boxObj != nil {
+                        self.existing = true
+                        self.boxesObject = boxObj
+                    }
+                    else {
+                        println("Error: \(error?.userInfo)")
+                    }
+                    dispatch_group_leave(self.fetchExistingBox) // Exit dispatch group
+                })
+            }
+            else {
+                println("Error box does not exist")
+            }
+        }
     }
     
     // Save the boxInfo
     func saveBoxInfo() {
-        boxesObject?.saveInBackgroundWithBlock{( success:Bool, error: NSError?) -> Void in
-            if success {
-                println("Saved boxes info")
+        // Find out if the object existed already or not
+        dispatch_group_notify(fetchExistingBox, GlobalMainQueue) {
+            if self.existing {
+                if (self.boxesObject?.isDirty())! {
+                    self.boxesObject?.saveInBackground()
+                }
             }
             else {
-                println("Error: \(error?.userInfo)")
+                self.boxesObject?.saveInBackgroundWithBlock{( success:Bool, error: NSError?) -> Void in
+                    if success {
+                        println("Saved boxes info")
+                        ObjectIdDictionary.sharedInstance.saveBoxID((self.boxesObject?.objectId)!, boxNumber: self.boxNumber)
+                    }
+                    else {
+                        println("Error: \(error?.userInfo)")
+                    }
+                }
             }
         }
     }
+    
 }
 
 // Class to handle info about position of Qualcomm stadium map
@@ -305,10 +407,13 @@ class ObjectIdDictionary {
     private var fetchSisDictID = dispatch_group_create()
     // Find out when were done fetching mapPointDictID
     private var fetchMapPointDictID = dispatch_group_create()
+    // Find out when were done fetching boxInfoDictID
+    private var fetchBoxInfoDictID = dispatch_group_create()
     
     // Class name for this PFObject
     private let className:String! = "ObjectIdDictionary"
     
+    // Sister Variables
     // Name to call and save sistersDict
     private let sistersString:String! = "sistersInfo"
     // Object ID  for sisters Dict saved on parse.com
@@ -318,7 +423,8 @@ class ObjectIdDictionary {
     // SistersDict with objectID and their respective usernames
     var sistersDictionary = [String: String]()
     
-    // MapPoint dictionary to calIntl and save mapPointDict
+    // MapPoint Variables
+    // MapPoint dictionary to call and save mapPointDict
     private let mapPointString:String! = "mapPointInfo"
     // Object ID for mapPoint Dict saved on parse.com
     private let mapPointDictID:String! = "sXiNzEEp45"
@@ -326,6 +432,16 @@ class ObjectIdDictionary {
     private var mapPointDictObject: PFObject?
     // MapPointDict with objectID and their respective mapPoint
     var mapPointDictionary:[String: String]? = [String: String]()
+    
+    // BoxInfo Variables
+    // BoxInfo dictionary to call and save
+    private let boxInfoString:String! = "boxInfo"
+    // Object ID for boxInfo Dict saved on parse.com
+    private let boxInfoDictID:String! = "KicKz5lea7"
+    // PFObject needed to interface with parse.com
+    private var boxInfoDictObject: PFObject?
+    // BoxesDict with objectID and their respective number
+    var boxesDictionary = [String: String]()
     
     // Singleton for ObjectIdDictionary
     class var sharedInstance: ObjectIdDictionary {
@@ -349,7 +465,13 @@ class ObjectIdDictionary {
         
         // Obtain mapPointIdDict if available
         getMapPointIdDict()
+        
+        // Obtain boxesDictionary
+        getBoxIdDict()
     }
+    
+    // MARK:
+    // Sister Object ID functions
     
     // Obtain sister object ID
     func getSisterId(name: String, success:(sisID:String?) -> Void) {
@@ -447,6 +569,9 @@ class ObjectIdDictionary {
         }
     }
     
+    // MARK:
+    // Map Point ObjectID functions
+    
     func getMapPointId(mapPointNumber: Int, success:(mapPointID:String?) -> Void) {
         // Update the mapPointIDDictionary just in case it has been updated
         updateMapPointIdDict()
@@ -508,6 +633,101 @@ class ObjectIdDictionary {
             }
             else {
                 println("Error \(error?.userInfo)")
+            }
+        }
+    }
+    
+    // MARK:
+    // Box Info ObjectID functions
+    
+    // Obtain box object ID
+    func getBoxId(boxNumber: Int, success:(boxID:String?) -> Void) {
+        // Update the boxesDictionary just in case it has been updated
+        updateBoxIdDict()
+        
+        // Wait until the boxesDictionary has been updated
+        dispatch_group_notify(fetchBoxInfoDictID, GlobalMainQueue) {
+            // Get the boxes object ID for box number
+            if let box = self.boxesDictionary[String(boxNumber)] {
+                success(boxID: box)
+            }
+            else {
+                success(boxID: nil)
+            }
+        }
+    }
+    
+    // Update the boxInfoDictObject just in case there has been an addition
+    func updateBoxIdDict(success:(updateSuccess:Bool, boxDict: [String:String]?) -> Void) {
+        dispatch_group_enter(fetchBoxInfoDictID)
+        boxInfoDictObject?.fetchInBackgroundWithBlock{(boxDict: PFObject?, error:NSError?) -> Void in
+            if boxDict != nil {
+                println("Found boxInfoDictObject")
+                self.boxInfoDictObject = boxDict
+                if let boxesDict = self.boxInfoDictObject?[self.boxInfoString] as? [String:String] {
+                    println("Got boxesDictionary")
+                    self.boxesDictionary = boxesDict
+                    // If we could obtain the dictionary then pass that back
+                    success(updateSuccess: true, boxDict: self.boxesDictionary)
+                }
+            }
+            else {
+                println("Error: \(error?.userInfo)")
+                // If not succesful then send results back
+                success(updateSuccess: false, boxDict: nil)
+            }
+            dispatch_group_leave(self.fetchBoxInfoDictID)
+        }
+    }
+    
+    // Update the boxInfoDictObject just in case there has been an additions
+    private func updateBoxIdDict() {
+        dispatch_group_enter(fetchBoxInfoDictID)
+        boxInfoDictObject?.fetchInBackgroundWithBlock{(boxDict: PFObject?, error:NSError?) -> Void in
+            if boxDict != nil {
+                self.boxInfoDictObject = boxDict
+                if let boxesDict = self.boxInfoDictObject?[self.boxInfoString] as? [String:String] {
+                    self.boxesDictionary = boxesDict
+                }
+            }
+            else {
+                println("Error: \(error?.userInfo)")
+            }
+            dispatch_group_leave(self.fetchBoxInfoDictID)
+        }
+    }
+    
+    // Get boxesDictionary from parse server
+    private func getBoxIdDict() {
+        // Get box dictionary
+        var query = PFQuery(className: className)
+        
+        query.getObjectInBackgroundWithId(boxInfoDictID, block: {(boxesDictObj:PFObject?, error:NSError?) -> Void in
+            if boxesDictObj != nil {
+                println("Found boxInfoDictObject")
+                self.boxInfoDictObject = boxesDictObj
+                // Get boxesDictionary if available
+                if let boxDict = self.boxInfoDictObject?[self.boxInfoString] as? [String:String] {
+                    println("Got boxesDictionary")
+                    self.boxesDictionary = boxDict
+                }
+            }
+            else {
+                println("Error: \(error?.userInfo)")
+            }
+        })
+    }
+    
+    // Save a new object ID for box
+    func saveBoxID(objectID:String, boxNumber:Int) {
+        boxesDictionary[String(boxNumber)] = objectID
+        boxInfoDictObject?[boxInfoString] = boxesDictionary
+        boxInfoDictObject?.saveInBackgroundWithBlock{(success:Bool, error:NSError?) -> Void in
+            if success {
+                println("Saved objectID for box")
+            }
+            else {
+                println("Error: \(error?.userInfo)")
             }
         }
     }

@@ -78,8 +78,10 @@ class MenuViewController: UIViewController,UITableViewDataSource, UITableViewDel
             if let vc = self.storyboard?.instantiateViewControllerWithIdentifier("ListNavController") as? UINavigationController {
                 parentVC.moveMenu(vc)
             }
-        case "Hi":
-            println("")
+        case "Boxes Out":
+            if let vc = self.storyboard?.instantiateViewControllerWithIdentifier("BoxesNavController") as? UINavigationController {
+                parentVC.moveMenu(vc)
+            }
         default:
             println("Not a viable cell item")
         }

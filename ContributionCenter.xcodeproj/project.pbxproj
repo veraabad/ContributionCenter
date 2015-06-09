@@ -38,6 +38,8 @@
 		CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */; };
 		CB6EF5E61AEAD02100508E2F /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */; };
 		CB81E3C31AFAD5D800D79DC0 /* QRGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81E3C21AFAD5D800D79DC0 /* QRGenerator.swift */; };
+		CB8B2E171B24209800062459 /* BoxesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8B2E161B24209800062459 /* BoxesListViewController.swift */; };
+		CB8B2E191B2422FE00062459 /* BoxesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8B2E181B2422FE00062459 /* BoxesTableViewCell.swift */; };
 		CB9219FE1AFEC38900E4A6F5 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9219FD1AFEC38900E4A6F5 /* MenuTableViewCell.swift */; };
 		CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */; };
 /* End PBXBuildFile section */
@@ -89,6 +91,8 @@
 		CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		CB6EF5E51AEAD02100508E2F /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		CB81E3C21AFAD5D800D79DC0 /* QRGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRGenerator.swift; sourceTree = "<group>"; };
+		CB8B2E161B24209800062459 /* BoxesListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxesListViewController.swift; sourceTree = "<group>"; };
+		CB8B2E181B2422FE00062459 /* BoxesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxesTableViewCell.swift; sourceTree = "<group>"; };
 		CB9219FD1AFEC38900E4A6F5 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSideBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -211,6 +215,7 @@
 		CB6AF0011AF8001F00529859 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CB8B2E161B24209800062459 /* BoxesListViewController.swift */,
 				CB56A6601B0AA2AD0018E0DC /* EditListDetailViewController.swift */,
 				CB56A65E1B0AA1950018E0DC /* ListDetailViewController.swift */,
 				CB56A65A1B0A9C290018E0DC /* ListViewController.swift */,
@@ -227,6 +232,7 @@
 		CB9219FF1AFEC39100E4A6F5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CB8B2E181B2422FE00062459 /* BoxesTableViewCell.swift */,
 				CB56A65C1B0AA11A0018E0DC /* ListTableViewCell.swift */,
 				CB9219FD1AFEC38900E4A6F5 /* MenuTableViewCell.swift */,
 			);
@@ -341,6 +347,7 @@
 				CB2F5DC51AE7173900A1E0A6 /* ContributionCenter.xcdatamodeld in Sources */,
 				CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */,
 				CB9219FE1AFEC38900E4A6F5 /* MenuTableViewCell.swift in Sources */,
+				CB8B2E191B2422FE00062459 /* BoxesTableViewCell.swift in Sources */,
 				CB56A6651B0BC06C0018E0DC /* ParseHelper.swift in Sources */,
 				CB27C91A1AFABC7300DF3B61 /* QRBaseViewController.swift in Sources */,
 				CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */,
@@ -350,6 +357,7 @@
 				CB56A65D1B0AA11A0018E0DC /* ListTableViewCell.swift in Sources */,
 				CB56A6611B0AA2AD0018E0DC /* EditListDetailViewController.swift in Sources */,
 				CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */,
+				CB8B2E171B24209800062459 /* BoxesListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
