@@ -31,6 +31,9 @@ class QRAuthenticationViewController: QRBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set top height
+        topHeight = "20"
+        
         // Setup views
         setPortraitViews(cameraViewP, otherView: qrImageViewP)
         setLandscapeViews(cameraViewL, otherView: qrImageViewL)

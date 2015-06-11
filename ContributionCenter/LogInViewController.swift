@@ -107,6 +107,8 @@ class LogInViewController: UIViewController {
         }
         else if deviceInterface == .Pad {
             showVC("AuthenticationVC") // If iPad then go to QRAuthentication
+            /*let vc = self.storyboard?.instantiateViewControllerWithIdentifier("SideBarController") as! AVSideBarController
+            self.showViewController(vc, sender: self)*/
         }
     }
 

@@ -38,15 +38,6 @@ class AVSideBarController: UIViewController {
         addVC(vc)
         showCurrentVC()
     }
-    
-    // Bring up menu
-    override func viewWillAppear(animated: Bool) {
-        /*
-        self.addChildViewController(sideMenuVC)
-        sideMenuVC.view.frame = self.view.frame
-        self.view.addSubview(sideMenuVC.view)
-        sideMenuVC.didMoveToParentViewController(self) */
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

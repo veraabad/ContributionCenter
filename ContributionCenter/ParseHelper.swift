@@ -106,9 +106,14 @@ class SisterInfo {
     var boxAssigned: Int? {
         get { return sisterObject?["boxAssigned"] as? Int}
         set (box) {
+            if box == nil {
+                sisterObject?.removeObjectForKey("boxAssigned")
+            }
+            else {
             boxesAssignedHolder.append(box!)
             self.boxesAssigned = boxesAssignedHolder
             sisterObject?["boxAssigned"] = box
+            }
         }
     }
     private(set) var boxesAssigned: [Int]? {
@@ -181,6 +186,7 @@ class SisterInfo {
                     }
                     else {
                         println("Error: \(error?.userInfo)")
+                        self.existing = false
                     }
                     dispatch_group_leave(self.fetchExistingSis) // Exit dispatch group
                 })
@@ -188,6 +194,8 @@ class SisterInfo {
                 // If no object id found then the name has not been saved
             else {
                 println("Error name does not exist")
+                dispatch_group_leave(self.fetchExistingSis)
+                self.existing = false
             }
         }
     }

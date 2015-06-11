@@ -24,6 +24,9 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var otherViewLandscapeLeftTop: [AnyObject] = []
     var otherViewLandscapeLeftTrailing:[AnyObject] = []
     
+    // Height from top
+    var topHeight:String!
+    
     // Landscape Bools
     var landscapeRight = false
     var landscapeLeft = false
@@ -68,16 +71,16 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         var viewsDict = ["cameraViewLandscape": cameraViewLandscape, "otherViewLandscape": otherViewLandscape]
         
         // Set constraints for landscape right
-        cameraLandscapeRightTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[cameraViewLandscape]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
+        cameraLandscapeRightTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-\(topHeight)-[cameraViewLandscape(==otherViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
         
-        cameraLandscapeRightTrailing = NSLayoutConstraint.constraintsWithVisualFormat("|[cameraViewLandscape][otherViewLandscape(==cameraViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
+        cameraLandscapeRightTrailing = NSLayoutConstraint.constraintsWithVisualFormat("H:|[cameraViewLandscape][otherViewLandscape(==cameraViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
         
         otherViewLandscapeRightHeight = NSLayoutConstraint.constraintsWithVisualFormat("V:[otherViewLandscape(==cameraViewLandscape)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
         
         // Set constraints for landscape left
-        otherViewLandscapeLeftTrailing = NSLayoutConstraint.constraintsWithVisualFormat("|[otherViewLandscape][cameraViewLandscape(==otherViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
+        otherViewLandscapeLeftTrailing = NSLayoutConstraint.constraintsWithVisualFormat("H:|[otherViewLandscape][cameraViewLandscape(==otherViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
         
-        otherViewLandscapeLeftTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[otherViewLandscape]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
+        otherViewLandscapeLeftTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-\(topHeight)-[otherViewLandscape(==otherViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
         
         cameraLandscapeLeftHeight = NSLayoutConstraint.constraintsWithVisualFormat("V:[cameraViewLandscape(==otherViewLandscape)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
         
@@ -161,6 +164,7 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             self.view.removeConstraints(otherViewLandscapeLeftTrailing)
             self.view.removeConstraints(otherViewLandscapeLeftTop)
             self.view.removeConstraints(cameraLandscapeLeftHeight)
+            landscapeLeft = false
         }
         self.view.addConstraints(cameraLandscapeRightTrailing)
         self.view.addConstraints(cameraLandscapeRightTop)
@@ -183,6 +187,7 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             self.view.removeConstraints(cameraLandscapeRightTrailing)
             self.view.removeConstraints(cameraLandscapeRightTop)
             self.view.removeConstraints(otherViewLandscapeRightHeight)
+            landscapeRight = false
         }
         self.view.addConstraints(otherViewLandscapeLeftTrailing)
         self.view.addConstraints(otherViewLandscapeLeftTop)
@@ -198,6 +203,7 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         cameraViewHolder = cameraViewPortrait
         otherViewPortrait?.hidden = false
         otherViewHolder = otherViewPortrait
+        self.view.layoutIfNeeded()
     }
     
     override func didReceiveMemoryWarning() {
