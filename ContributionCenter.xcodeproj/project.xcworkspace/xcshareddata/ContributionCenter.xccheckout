@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>858BED91-3AA2-470F-A8DA-F89CCE0FA425</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>4E4B5939EB863E3347D6B80970D16A10085D104F</key>
+		<string>gitlab.com:veraabad/ContributionCenterApp-iOS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ContributionCenter.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>4E4B5939EB863E3347D6B80970D16A10085D104F</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>gitlab.com:veraabad/ContributionCenterApp-iOS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>4E4B5939EB863E3347D6B80970D16A10085D104F</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>4E4B5939EB863E3347D6B80970D16A10085D104F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ContributionCenter</string>
+		</dict>
+	</array>
+</dict>
+</plist>

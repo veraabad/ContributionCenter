@@ -42,6 +42,7 @@
 		CB8B2E191B2422FE00062459 /* BoxesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8B2E181B2422FE00062459 /* BoxesTableViewCell.swift */; };
 		CB9219FE1AFEC38900E4A6F5 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9219FD1AFEC38900E4A6F5 /* MenuTableViewCell.swift */; };
 		CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */; };
+		CBE532901B2A1FA700CA7CDF /* Horario.csv in Resources */ = {isa = PBXBuildFile; fileRef = CBE5328F1B2A1FA700CA7CDF /* Horario.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		CB8B2E181B2422FE00062459 /* BoxesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxesTableViewCell.swift; sourceTree = "<group>"; };
 		CB9219FD1AFEC38900E4A6F5 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVSideBarController.swift; sourceTree = "<group>"; };
+		CBE5328F1B2A1FA700CA7CDF /* Horario.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Horario.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +175,7 @@
 			children = (
 				CB56A6641B0BC06C0018E0DC /* ParseHelper.swift */,
 				CB81E3C21AFAD5D800D79DC0 /* QRGenerator.swift */,
+				CBE5328F1B2A1FA700CA7CDF /* Horario.csv */,
 				CB2F5DC11AE7173800A1E0A6 /* AppDelegate.swift */,
 				CB2F5DC81AE7173A00A1E0A6 /* Main.storyboard */,
 				CBDDD57E1AFDDC4D009D3068 /* AVSideBarController.swift */,
@@ -321,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB2F5DCA1AE7173A00A1E0A6 /* Main.storyboard in Resources */,
+				CBE532901B2A1FA700CA7CDF /* Horario.csv in Resources */,
 				CB2F5DCF1AE7173B00A1E0A6 /* LaunchScreen.xib in Resources */,
 				CB2F5DCC1AE7173B00A1E0A6 /* Images.xcassets in Resources */,
 			);

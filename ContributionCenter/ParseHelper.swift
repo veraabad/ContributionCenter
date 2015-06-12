@@ -554,7 +554,9 @@ class ObjectIdDictionary {
         query.getObjectInBackgroundWithId(sisterDictID, block: {(sistersDict: PFObject?, error: NSError?) -> Void in
             if sistersDict != nil {
                 self.sistersDictObject = sistersDict
-                self.sistersDictionary = self.sistersDictObject?[self.sistersString] as! [String:String]
+                if let sisDict = self.sistersDictObject?[self.sistersString] as? [String:String] {
+                    self.sistersDictionary = sisDict
+                }
             }
             else {
                 println("Error \(error?.userInfo)")
