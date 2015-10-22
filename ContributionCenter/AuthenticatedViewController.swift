@@ -46,7 +46,7 @@ class AuthenticatedViewController: UIViewController {
         let delay = Double(delaySec) * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
-            println("Timer up")
+            print("Timer up")
             let vc = self.storyboard?.instantiateViewControllerWithIdentifier("SideBarController") as! AVSideBarController
             self.showViewController(vc, sender: self)
         }

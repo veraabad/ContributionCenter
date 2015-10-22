@@ -38,7 +38,7 @@ class BoxesListViewController: UIViewController, UITableViewDataSource, UITableV
             self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
             
             // Navigation item on the right
-            var rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
+            let rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
             self.navigationItem.leftBarButtonItem = rightItem
         }
     }
@@ -68,13 +68,13 @@ class BoxesListViewController: UIViewController, UITableViewDataSource, UITableV
     func obtainBoxesDict() {
         ObjectIdDictionary.sharedInstance.updateBoxIdDict{(success:Bool, boxDict: [String:String]?) -> Void in
             if success {
-                if let keys = boxDict?.keys.array {
-                    self.boxesDictArray = keys
+                if let keys = boxDict?.keys {
+                    self.boxesDictArray = Array(keys)
                     self.obtainBoxInfo()
                 }
             }
             else {
-                println("Boxes object ID dictionary could not be retrieved")
+                print("Boxes object ID dictionary could not be retrieved")
             }
         }
     }
@@ -83,7 +83,7 @@ class BoxesListViewController: UIViewController, UITableViewDataSource, UITableV
     func obtainBoxInfo() {
         for boxNumber in boxesDictArray! {
             var boxInfo:BoxesOut?
-            boxInfo = BoxesOut(boxNum: (boxNumber.toInt())!) {(success) -> Void in
+            boxInfo = BoxesOut(boxNum: (Int(boxNumber))!) {(success) -> Void in
                 if success {
                     self.boxesArray! += [boxInfo!]
                     if self.boxesArray?.count == 10 {
@@ -94,7 +94,7 @@ class BoxesListViewController: UIViewController, UITableViewDataSource, UITableV
                     }
                 }
                 else {
-                    println("Box has not been saved yet")
+                    print("Box has not been saved yet")
                 }
             }
         }
@@ -117,11 +117,11 @@ class BoxesListViewController: UIViewController, UITableViewDataSource, UITableV
             case 2:
                 boxesArrayHolder! += [box] // Show all boxes
             default:
-                println("Not defined selection")
+                print("Not defined selection")
             }
         }
         // Sort array
-        boxesArrayHolder?.sort({$0.boxNumber < $1.boxNumber})
+        boxesArrayHolder?.sortInPlace({$0.boxNumber < $1.boxNumber})
         boxesTableView.reloadData()
     }
     
@@ -143,6 +143,6 @@ class BoxesListViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("Row selected \(indexPath.row)")
+        print("Row selected \(indexPath.row)")
     }
 }

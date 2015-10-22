@@ -40,7 +40,7 @@ class QRAuthenticationViewController: QRBaseViewController {
         
         if let vc = self.navigationController?.parentViewController as? AVSideBarController {
             // Save instance of parentViewController
-            println("QR has parent")
+            print("QR has parent")
             parentVC = vc
             // Have a clear background for UINavigationController
             self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
@@ -49,7 +49,7 @@ class QRAuthenticationViewController: QRBaseViewController {
             self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
             
             // Navigation item on the right for
-            var rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
+            let rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
             self.navigationItem.leftBarButtonItem = rightItem
         }
     }
@@ -65,8 +65,9 @@ class QRAuthenticationViewController: QRBaseViewController {
     
     // Generate QR code and place in image view
     func produceQRCode() {
-        var imageView = otherViewHolder as! UIImageView
-        var scale:CGFloat! = imageView.image?.scale
+        let imageView = otherViewHolder as! UIImageView
+        let scale:CGFloat! = imageView.image?.scale
+        print("Scale \(scale)")
         // Obtain QR code to show
         qrGenerator = QRGenerator(qrString: "Abad Vera", sizeRate: scale)
         
@@ -92,15 +93,15 @@ class QRAuthenticationViewController: QRBaseViewController {
         else {
             if qrResponse == "Abad Vera" {
                 captureSession.stopRunning()
-                println("Success")
-                var vc = self.storyboard?.instantiateViewControllerWithIdentifier("AuthenticatedVC") as! AuthenticatedViewController
+                print("Success")
+                let vc = self.storyboard?.instantiateViewControllerWithIdentifier("AuthenticatedVC") as! AuthenticatedViewController
                 self.showViewController(vc, sender: self)
             }
         }
     }
     
     func showMenuAction() {
-        println("Menu called")
+        print("Menu called")
         if parentVC != nil {
             parentVC.showMenu()
         }

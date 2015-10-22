@@ -24,7 +24,7 @@ class MenuViewController: UIViewController,UITableViewDataSource, UITableViewDel
     
     override func viewDidAppear(animated: Bool) {
         if let parent = self.parentViewController as! AVSideBarController! {
-            println("Has parent")
+            print("Has parent")
             // Hold instance of parent view controller
             parentVC = parent
         }
@@ -59,7 +59,7 @@ class MenuViewController: UIViewController,UITableViewDataSource, UITableViewDel
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // Bring up view depending on which cell chosen
         let cell = menuTableView.cellForRowAtIndexPath(indexPath) as! MenuTableViewCell
-        println("Title: \(cell.menuItemLabel.text)")
+        print("Title: \(cell.menuItemLabel.text)")
         let menuItem:String! = cell.menuItemLabel.text
         switch menuItem {
         case "Sign In iPad":
@@ -83,7 +83,7 @@ class MenuViewController: UIViewController,UITableViewDataSource, UITableViewDel
                 parentVC.moveMenu(vc)
             }
         default:
-            println("Not a viable cell item")
+            print("Not a viable cell item")
         }
     }
     

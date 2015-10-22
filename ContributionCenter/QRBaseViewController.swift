@@ -14,15 +14,15 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     // camera view
     var cameraViewLandscape: UIView!
     // Camera view constraints
-    var cameraLandscapeRightTop: [AnyObject] = []
-    var cameraLandscapeRightTrailing: [AnyObject] = []
-    var cameraLandscapeLeftHeight: [AnyObject] = []
+    var cameraLandscapeRightTop: [NSLayoutConstraint] = []
+    var cameraLandscapeRightTrailing: [NSLayoutConstraint] = []
+    var cameraLandscapeLeftHeight: [NSLayoutConstraint] = []
     // other view to use
     var otherViewLandscape: UIView?
     // Other view constraints
-    var otherViewLandscapeRightHeight: [AnyObject] = []
-    var otherViewLandscapeLeftTop: [AnyObject] = []
-    var otherViewLandscapeLeftTrailing:[AnyObject] = []
+    var otherViewLandscapeRightHeight: [NSLayoutConstraint] = []
+    var otherViewLandscapeLeftTop: [NSLayoutConstraint] = []
+    var otherViewLandscapeLeftTrailing:[NSLayoutConstraint] = []
     
     // Height from top
     var topHeight:String!
@@ -42,13 +42,18 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     // other view holder
     var otherViewHolder:UIView?
     
+    // UIButton to flip the camera to front or back
+    @IBOutlet weak var cameraFlipBttn:UIButton!
+    var flipBool = false
+    
     // Camera variables
     var captureSession = AVCaptureSession()
     var previewLayer:AVCaptureVideoPreviewLayer?
     let captureMetadataOutput = AVCaptureMetadataOutput()
     
     // If camera found, store it here
-    var captureDevice:AVCaptureDevice?
+    var captureDeviceFront:AVCaptureDevice?
+    var captureDeviceBack:AVCaptureDevice?
     var previewLayerConnection:AVCaptureConnection?
     
     // Frame for QR
@@ -65,41 +70,41 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     }
     
     override func viewWillAppear(animated: Bool) {
-        cameraViewLandscape.setTranslatesAutoresizingMaskIntoConstraints(false)
-        otherViewLandscape?.setTranslatesAutoresizingMaskIntoConstraints(false)
+        cameraViewLandscape.translatesAutoresizingMaskIntoConstraints = false
+        otherViewLandscape?.translatesAutoresizingMaskIntoConstraints = false
         
-        var viewsDict = ["cameraViewLandscape": cameraViewLandscape, "otherViewLandscape": otherViewLandscape]
+        let viewsDict = ["cameraViewLandscape": cameraViewLandscape, "otherViewLandscape": otherViewLandscape]
         
         // Set constraints for landscape right
         cameraLandscapeRightTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-\(topHeight)-[cameraViewLandscape(==otherViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
         
         cameraLandscapeRightTrailing = NSLayoutConstraint.constraintsWithVisualFormat("H:|[cameraViewLandscape][otherViewLandscape(==cameraViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
         
-        otherViewLandscapeRightHeight = NSLayoutConstraint.constraintsWithVisualFormat("V:[otherViewLandscape(==cameraViewLandscape)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+        otherViewLandscapeRightHeight = NSLayoutConstraint.constraintsWithVisualFormat("V:[otherViewLandscape(==cameraViewLandscape)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
         
         // Set constraints for landscape left
         otherViewLandscapeLeftTrailing = NSLayoutConstraint.constraintsWithVisualFormat("H:|[otherViewLandscape][cameraViewLandscape(==otherViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
         
         otherViewLandscapeLeftTop = NSLayoutConstraint.constraintsWithVisualFormat("V:|-\(topHeight)-[otherViewLandscape(==otherViewLandscape)]|", options: NSLayoutFormatOptions.AlignAllBottom, metrics: nil, views: viewsDict)
         
-        cameraLandscapeLeftHeight = NSLayoutConstraint.constraintsWithVisualFormat("V:[cameraViewLandscape(==otherViewLandscape)]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+        cameraLandscapeLeftHeight = NSLayoutConstraint.constraintsWithVisualFormat("V:[cameraViewLandscape(==otherViewLandscape)]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
         
         // Find orientation of view controller
         switch UIApplication.sharedApplication().statusBarOrientation {
         case .Portrait:
-            println("Portrait")
+            print("Portrait")
             showPortrait()
             
         case .LandscapeLeft:
-            println("LandscapeLeft")
+            print("LandscapeLeft")
             showLandscapeLeft()
             
         case .LandscapeRight:
-            println("LandscapeRight")
+            print("LandscapeRight")
             showLandscapeRight()
             
         default:
-            println("Not a supported orientation")
+            print("Not a supported orientation")
         }
     }
     
@@ -158,7 +163,7 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         otherViewHolder = otherViewLandscape
         
         // if view in landscape left then flip
-        println("Landscape right called")
+        print("Landscape right called")
         self.view.layoutIfNeeded()
         if landscapeLeft {
             self.view.removeConstraints(otherViewLandscapeLeftTrailing)
@@ -181,7 +186,7 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         otherViewHolder = otherViewLandscape
         
         // if view in landscape left then flip
-        println("Landscape left called")
+        print("Landscape left called")
         self.view.layoutIfNeeded()
         if landscapeRight {
             self.view.removeConstraints(cameraLandscapeRightTrailing)
@@ -227,9 +232,16 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             if (device.hasMediaType(AVMediaTypeVideo)) {
                 // Finally check the position and confirm its the front camera
                 if (device.position == AVCaptureDevicePosition.Front) {
-                    captureDevice = device as? AVCaptureDevice
-                    if captureDevice != nil {
-                        println("Front camera found")
+                    captureDeviceFront = device as? AVCaptureDevice
+                    if captureDeviceFront != nil && captureDeviceBack != nil {
+                        print("Front camera found")
+                        self.setupCamera()
+                    }
+                }
+                if (device.position == AVCaptureDevicePosition.Back) {
+                    captureDeviceBack = device as? AVCaptureDevice
+                    if captureDeviceFront != nil && captureDeviceBack != nil {
+                        print("Front camera found")
                         self.setupCamera()
                     }
                 }
@@ -239,13 +251,18 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     
     // Setup to use front camera
     func setupCamera() {
-        var err:NSError? = nil
+        let err:NSError? = nil
+        do {
+            try captureSession.addInput(AVCaptureDeviceInput(device: captureDeviceFront))
+        } catch {
+            print(error)
+        }
         
-        captureSession.addInput(AVCaptureDeviceInput(device: captureDevice, error: &err))
+        
         
         // print error if one is present
         if err != nil {
-            println("error : \(err?.localizedDescription)")
+            print("error : \(err?.localizedDescription)")
         }
         
         // setup AVCaptureMetadataOutput
@@ -270,7 +287,7 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         // Check if the metadataObjects array is not nil and it contains at least one object
         if metadataObjects == nil || metadataObjects.count == 0 {
             qrFrameView.frame = CGRectZero
-            println("No QR code is detected")
+            print("No QR code is detected")
             return
         }
         
@@ -285,7 +302,7 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             
             // print the string info in the qr code
             if metadataObj.stringValue != nil {
-                println("QR Code: \(metadataObj.stringValue)")
+                print("QR Code: \(metadataObj.stringValue)")
                 //self.qrResponse = metadataObj.stringValue
                 obtainRespon(metadataObj.stringValue)
             }
@@ -315,8 +332,39 @@ class QRBaseViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
             previewLayer?.frame = self.cameraViewHolder.bounds
             previewLayer?.position = CGPointMake(CGRectGetMidX(cameraViewHolder.bounds), CGRectGetMidY(cameraViewHolder.bounds))
-            self.cameraViewHolder?.layer.addSublayer(previewLayer)
+            self.cameraViewHolder?.layer.addSublayer(previewLayer!)
         }
+    }
+    
+    // Flip camera if pressed
+    @IBAction func flipCameraBttnAction(sender:UIButton) {
+        var error:NSError? = nil
+        if flipBool {
+            captureSession.stopRunning()
+            do {
+                try captureSession.removeInput(AVCaptureDeviceInput(device: captureDeviceBack))
+                try captureSession.addInput(AVCaptureDeviceInput(device: captureDeviceFront))
+            } catch {
+                print(error)
+            }
+            captureSession.startRunning()
+            cameraFlipBttn.titleLabel?.text = "Back"
+            flipBool = false
+        }
+        else {
+            captureSession.stopRunning()
+            do {
+                    try captureSession.removeInput(AVCaptureDeviceInput(device: captureDeviceFront))
+                    try captureSession.addInput(AVCaptureDeviceInput(device: captureDeviceBack))
+            } catch {
+                print(error)
+            }
+            captureSession.startRunning()
+            cameraFlipBttn.titleLabel?.text = "Front"
+            flipBool = true
+        }
+        
+        
     }
    
 }

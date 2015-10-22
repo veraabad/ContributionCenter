@@ -33,6 +33,7 @@
 		CB56A65F1B0AA1950018E0DC /* ListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A65E1B0AA1950018E0DC /* ListDetailViewController.swift */; };
 		CB56A6611B0AA2AD0018E0DC /* EditListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A6601B0AA2AD0018E0DC /* EditListDetailViewController.swift */; };
 		CB56A6651B0BC06C0018E0DC /* ParseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB56A6641B0BC06C0018E0DC /* ParseHelper.swift */; };
+		CB6906B91B2AFFFD00B828CA /* PrintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6906B81B2AFFFD00B828CA /* PrintViewController.swift */; };
 		CB6AEFFE1AF5FCC900529859 /* AuthenticatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */; };
 		CB6AF0001AF6C93900529859 /* QRAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */; };
 		CB6CE8C01AFBCDDB00AC8897 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */; };
@@ -87,6 +88,7 @@
 		CB56A6601B0AA2AD0018E0DC /* EditListDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListDetailViewController.swift; sourceTree = "<group>"; };
 		CB56A6641B0BC06C0018E0DC /* ParseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseHelper.swift; sourceTree = "<group>"; };
 		CB56A66A1B0BF9700018E0DC /* ContributionCenter-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ContributionCenter-Bridging-Header.h"; sourceTree = "<group>"; };
+		CB6906B81B2AFFFD00B828CA /* PrintViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrintViewController.swift; sourceTree = "<group>"; };
 		CB6AEFFD1AF5FCC900529859 /* AuthenticatedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedViewController.swift; sourceTree = "<group>"; };
 		CB6AEFFF1AF6C93900529859 /* QRAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRAuthenticationViewController.swift; sourceTree = "<group>"; };
 		CB6CE8BF1AFBCDDB00AC8897 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 		CB6AF0011AF8001F00529859 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CB6906B81B2AFFFD00B828CA /* PrintViewController.swift */,
 				CB8B2E161B24209800062459 /* BoxesListViewController.swift */,
 				CB56A6601B0AA2AD0018E0DC /* EditListDetailViewController.swift */,
 				CB56A65E1B0AA1950018E0DC /* ListDetailViewController.swift */,
@@ -286,6 +289,7 @@
 		CB2F5DB41AE7173700A1E0A6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Abad Vera";
 				TargetAttributes = {
@@ -357,6 +361,7 @@
 				CBDDD57F1AFDDC4D009D3068 /* AVSideBarController.swift in Sources */,
 				CB2F5DC21AE7173800A1E0A6 /* AppDelegate.swift in Sources */,
 				CB81E3C31AFAD5D800D79DC0 /* QRGenerator.swift in Sources */,
+				CB6906B91B2AFFFD00B828CA /* PrintViewController.swift in Sources */,
 				CB56A6581AFFDE7B0018E0DC /* CheckInViewController.swift in Sources */,
 				CB56A65D1B0AA11A0018E0DC /* ListTableViewCell.swift in Sources */,
 				CB56A6611B0AA2AD0018E0DC /* EditListDetailViewController.swift in Sources */,

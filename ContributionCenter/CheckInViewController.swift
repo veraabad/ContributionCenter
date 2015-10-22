@@ -26,12 +26,12 @@ class CheckInViewController: QRBaseViewController {
     
     // Segment control to know what to do with QR code
     @IBOutlet weak var checkInSegmentControl: UISegmentedControl!
-    var segmentPortraitConstraintsV: [AnyObject] = []
-    var segmentPortraitConstraintsH: [AnyObject] = []
-    var segmentLandscapeContraintsV: [AnyObject] = []
-    var segmentLandscapeRightContraintsH: [AnyObject] = []
-    var segmentLandscapeLeftConstraintsH: [AnyObject] = []
-    var segmentHeightConstraint: [AnyObject] = []
+    var segmentPortraitConstraintsV: [NSLayoutConstraint] = []
+    var segmentPortraitConstraintsH: [NSLayoutConstraint] = []
+    var segmentLandscapeContraintsV: [NSLayoutConstraint] = []
+    var segmentLandscapeRightContraintsH: [NSLayoutConstraint] = []
+    var segmentLandscapeLeftConstraintsH: [NSLayoutConstraint] = []
+    var segmentHeightConstraint: [NSLayoutConstraint] = []
     
     // Find out when were done with fetching boxes
     var fetchBoxes = dispatch_group_create()
@@ -85,7 +85,7 @@ class CheckInViewController: QRBaseViewController {
         // Check for instance of parent and setup navController
         if let vc = self.navigationController?.parentViewController as? AVSideBarController {
             // Save instance of parentViewController
-            println("Check in has parent")
+            print("Check in has parent")
             parentVC = vc
             // Have a clear background for UINavigationController
             self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
@@ -94,7 +94,7 @@ class CheckInViewController: QRBaseViewController {
             self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
             
             // Navigation item on the right for
-            var rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
+            let rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
             self.navigationItem.leftBarButtonItem = rightItem
         }
         // Get the boxes
@@ -106,6 +106,9 @@ class CheckInViewController: QRBaseViewController {
         findCamera()
         previewLayerConnection = previewLayer?.connection
         setupQRFrameView()
+        
+        /******* Not Ready *******/
+        //cameraViewPortrait.bringSubviewToFront(cameraFlipBttn)
     }
     
     override func didReceiveMemoryWarning() {
@@ -129,14 +132,14 @@ class CheckInViewController: QRBaseViewController {
         if box.sisterAssigned != nil || box.sisterAssigned != "" {
             boxesNoSis? += [box]
         }
-        boxesNoSis?.sort({$0.boxNumber < $1.boxNumber}) // Sort in ascending order
+        boxesNoSis?.sortInPlace({$0.boxNumber < $1.boxNumber}) // Sort in ascending order
     }
     
     // Get all boxes number
     func getBoxDict() {
         ObjectIdDictionary.sharedInstance.updateBoxIdDict{(success:Bool, boxDict:[String:String]?) -> Void in
             if success {
-                self.boxesNumArray = boxDict?.keys.array
+                self.boxesNumArray = [String](boxDict!.keys)
                 self.getBoxesInfo()
             }
             else {
@@ -150,7 +153,7 @@ class CheckInViewController: QRBaseViewController {
         dispatch_group_enter(fetchBoxes)
         for boxNumber in boxesNumArray! {
             var boxInfo:BoxesOut?
-            boxInfo = BoxesOut(boxNum: (boxNumber.toInt())!) {(success) -> Void in
+            boxInfo = BoxesOut(boxNum: (Int(boxNumber))!) {(success) -> Void in
                 if success {
                     self.boxesArray! += [boxInfo!]
                     if self.boxesArray?.count == self.boxesNumArray?.count {
@@ -160,20 +163,20 @@ class CheckInViewController: QRBaseViewController {
                 else {
                     self.showAlert("Network Error", message: "Unable to retrieve info for box \(boxNumber)")
                 }
-                self.boxesArray?.sort({$0.boxNumber < $1.boxNumber})
+                self.boxesArray?.sortInPlace({$0.boxNumber < $1.boxNumber})
             }
         }
     }
     
     func latestBoxInfo(block:(success:Bool) -> Void) {
         for var i = 0; i < boxesArray?.count; i++ {
-            var box = boxesArray?[i]
+            let box = boxesArray?[i]
             box!.fetchBoxInfo{(success) -> Void in
                 if success{
                     if self.checkInSegmentControl.selectedSegmentIndex == 0 {
                         self.parseBox(box!)
                     }
-                    println("Box: \(box?.boxNumber)")
+                    print("Box: \(box?.boxNumber)")
                     if box?.boxNumber == self.boxesArray?.count {
                         block(success: true)
                     }
@@ -191,8 +194,8 @@ class CheckInViewController: QRBaseViewController {
         dispatch_group_notify(fetchBoxes, dispatch_get_main_queue()) {
             self.latestBoxInfo{(success) -> Void in
                 if success {
-                    var box = self.boxesNoSis?[0]
-                    println("Box number assigned: \(box!.boxNumber)")
+                    let box = self.boxesNoSis?[0]
+                    print("Box number assigned: \(box!.boxNumber)")
                     self.currentSister?.boxAssigned = box?.boxNumber
                     box?.sisterAssigned = self.currentSister!.firstName! + " " + self.currentSister!.lastName!
                     box?.saveBoxInfo() // Save changes
@@ -209,7 +212,7 @@ class CheckInViewController: QRBaseViewController {
     func checkOutSister() {
         dispatch_group_notify(fetchBoxes, dispatch_get_main_queue()) {
             if let boxNum = self.currentSister?.boxAssigned {
-                var box = self.boxesArray?[boxNum - 1]
+                let box = self.boxesArray?[boxNum - 1]
                 box?.sisterAssigned = ""
                 // Save changes
                 box?.saveBoxInfo()
@@ -252,8 +255,8 @@ class CheckInViewController: QRBaseViewController {
             clearCamera()
         }
         else {
-            var boxNum = previousSister?.boxAssigned
-            var box = boxesArray?[boxNum! - 1]
+            let boxNum = previousSister?.boxAssigned
+            let box = boxesArray?[boxNum! - 1]
             box?.sisterAssigned = currentSister!.firstName! + " " + currentSister!.lastName!
             previousSister?.boxAssigned = nil
             currentSister?.boxAssigned = box?.boxNumber
@@ -282,7 +285,7 @@ class CheckInViewController: QRBaseViewController {
         case 3:
             replaceSister()
         default:
-            println("Not part of segment choice")
+            print("Not part of segment choice")
         }
     }
     
@@ -292,7 +295,7 @@ class CheckInViewController: QRBaseViewController {
     // Add constraints for landscape right
     override func showLandscapeRight() {
         super.showLandscapeRight()
-        println("Segment Constraints being created")
+        print("Segment Constraints being created")
         if portrait {
             self.view.removeConstraints(segmentPortraitConstraintsV)
             self.view.removeConstraints(segmentPortraitConstraintsH)
@@ -347,10 +350,10 @@ class CheckInViewController: QRBaseViewController {
     }
     
     func createConstraints() {
-        sisterLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        checkInSegmentControl.setTranslatesAutoresizingMaskIntoConstraints(false)
+        sisterLabel.translatesAutoresizingMaskIntoConstraints = false
+        checkInSegmentControl.translatesAutoresizingMaskIntoConstraints = false
         
-        var viewsDict = ["labelView": sisterLabel, "segmentView": checkInSegmentControl, "cameraViewP": cameraViewPortrait, "cameraViewL": cameraViewLandscape]
+        let viewsDict = ["labelView": sisterLabel, "segmentView": checkInSegmentControl, "cameraViewP": cameraViewPortrait, "cameraViewL": cameraViewLandscape]
         
         // Set constraints for portrait
         segmentPortraitConstraintsV = NSLayoutConstraint.constraintsWithVisualFormat("V:|-72-[segmentView(==28)]-[labelView]-[cameraViewP]", options: .AlignAllCenterX, metrics: nil, views: viewsDict)
@@ -358,10 +361,10 @@ class CheckInViewController: QRBaseViewController {
         segmentPortraitConstraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[segmentView(==labelView)]-|", options: .AlignAllLeading, metrics: nil, views: viewsDict)
         
         // Set constraints for landscape right
-        segmentLandscapeRightContraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:[cameraViewL]-[segmentView(==labelView)]-|", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+        segmentLandscapeRightContraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:[cameraViewL]-[segmentView(==labelView)]-|", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
         
         // Set constraints for landscape left
-        segmentLandscapeLeftConstraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[segmentView(==labelView)]-[cameraViewL]", options: NSLayoutFormatOptions.allZeros, metrics: nil, views: viewsDict)
+        segmentLandscapeLeftConstraintsH = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[segmentView(==labelView)]-[cameraViewL]", options: NSLayoutFormatOptions(), metrics: nil, views: viewsDict)
         
         // Set vertical constraints for when in landscape mode
         segmentLandscapeContraintsV = NSLayoutConstraint.constraintsWithVisualFormat("V:|-72-[segmentView(==28)]-[labelView]-|", options: NSLayoutFormatOptions.AlignAllLeading, metrics: nil, views: viewsDict)
@@ -390,14 +393,14 @@ class CheckInViewController: QRBaseViewController {
         let delay = Double(delaySec) * Double(NSEC_PER_MSEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
-            println("Camera running again")
+            print("Camera running again")
             self.qrFrameView.frame = CGRectZero // Removes the qrFrameView from sight once camera starts up again
             self.captureSession.startRunning()
         }
     }
     
     func showMenuAction() {
-        println("Menu called")
+        print("Menu called")
         if parentVC != nil {
             parentVC.showMenu()
         }
@@ -408,7 +411,7 @@ class CheckInViewController: QRBaseViewController {
     }
     
     func showAlert(title:String, message:String) {
-        var alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "OK")
+        let alert = UIAlertView(title: title, message: message, delegate: self, cancelButtonTitle: "OK")
         //var alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alert.show()
         //self.presentViewController(alert, animated: true, completion: nil)

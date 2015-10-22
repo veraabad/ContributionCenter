@@ -83,7 +83,7 @@ class AVSideBarController: UIViewController {
     
     func moveMenu(newVC: UIViewController) {
         if newVC.restorationIdentifier != currentVC.restorationIdentifier {
-            println("Not Same")
+            print("Not Same")
             // Move previous current view controller
             shiftCurrentVC()
             // Add newVC to currentVC
@@ -93,7 +93,7 @@ class AVSideBarController: UIViewController {
             showViewControllerFromSide(newVC, inContainer: self.view, bounds: self.view.bounds, side: .RIGHT)
         }
         else if newVC.restorationIdentifier == currentVC.restorationIdentifier {
-            println("Same")
+            print("Same")
             hideMenu()
         }
     }
@@ -106,8 +106,8 @@ class AVSideBarController: UIViewController {
             let toView = viewController.view;
             
             // Setup bounds for new view controller view
-            toView.translatesAutoresizingMaskIntoConstraints()
-            toView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+            //toView.translatesAutoresizingMaskIntoConstraints
+            toView.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight];
             var frame = bounds
             frame.origin.y = containerView.frame.height - bounds.height
             switch side {
@@ -123,7 +123,7 @@ class AVSideBarController: UIViewController {
             containerView.addSubview(toView)
             
             UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1.0,
-                initialSpringVelocity: 1.0, options: nil, animations: { () -> Void in
+                initialSpringVelocity: 1.0, options: [], animations: { () -> Void in
                     switch side {
                     case .LEFT, .RIGHT:
                         frame.origin.x = 0
@@ -138,7 +138,7 @@ class AVSideBarController: UIViewController {
     // Dismiss the view controller through moving it back to given side
     func dismissViewControllerToSide(viewController: UIViewController, side: TRANSITION, _ callback:(()->())?) {
         UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1.0,
-            initialSpringVelocity: 1.0, options: nil, animations: { () -> Void in
+            initialSpringVelocity: 1.0, options: [], animations: { () -> Void in
                 // Move back to bottom
                 switch side {
                 case .LEFT:

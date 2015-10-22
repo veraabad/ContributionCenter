@@ -13,7 +13,7 @@ var GlobalMainQueue: dispatch_queue_t {
 }
 
 var GlobalUserInitiatedQueue: dispatch_queue_t {
-    return dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)
+    return dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)
 }
 
 // Class to handle info for Sisters helping out at the boxes
@@ -160,7 +160,7 @@ class SisterInfo {
                 block(success: true)
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
                 block(success: false)
             }
             dispatch_group_leave(self.fetchExistingSis)
@@ -173,8 +173,8 @@ class SisterInfo {
         dispatch_group_enter(fetchExistingSis)
         ObjectIdDictionary.sharedInstance.getSisterId(sisName) {(sisID) -> Void in
             if sisID != nil {
-                println("Sister ID is: \(sisID)")
-                var query = PFQuery(className: self.className)
+                print("Sister ID is: \(sisID)")
+                let query = PFQuery(className: self.className)
                 query.getObjectInBackgroundWithId(sisID!, block: {(sisObject: PFObject?, error: NSError?) -> Void in
                     // If a PFObject is found then save it and try to retrieve the boxesAssigned array
                     if sisObject != nil {
@@ -185,7 +185,7 @@ class SisterInfo {
                         }
                     }
                     else {
-                        println("Error: \(error?.userInfo)")
+                        print("Error: \(error?.userInfo)")
                         self.existing = false
                     }
                     dispatch_group_leave(self.fetchExistingSis) // Exit dispatch group
@@ -193,7 +193,7 @@ class SisterInfo {
             }
                 // If no object id found then the name has not been saved
             else {
-                println("Error name does not exist")
+                print("Error name does not exist")
                 dispatch_group_leave(self.fetchExistingSis)
                 self.existing = false
             }
@@ -206,18 +206,18 @@ class SisterInfo {
         dispatch_group_notify(fetchExistingSis, GlobalMainQueue){
             if self.existing {
                 if self.sisterObject?.isDirty() == true {
-                    println("Sister object \(self.sisterObject)")
+                    print("Sister object \(self.sisterObject)")
                     self.sisterObject?.saveInBackground()
                 }
             }
             else {
                 self.sisterObject?.saveInBackgroundWithBlock{( success:Bool, error: NSError?) -> Void in
                     if success {
-                        println("Saved sister's info")
+                        print("Saved sister's info")
                         ObjectIdDictionary.sharedInstance.saveSisterID((self.sisterObject?.objectId)!, sisterName: String(self.firstName! + " " + self.lastName!))
                     }
                     else {
-                        println("Error: \(error?.userInfo)")
+                        print("Error: \(error?.userInfo)")
                     }
                 }
             }
@@ -281,7 +281,7 @@ class BoxesOut {
                 block(success: true)
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
                 block(success: false)
             }
             dispatch_group_leave(self.fetchExistingBox)
@@ -294,7 +294,7 @@ class BoxesOut {
         dispatch_group_enter(fetchExistingBox)
         ObjectIdDictionary.sharedInstance.getBoxId(boxNum) {(boxID) -> Void in
             if boxID != nil {
-                var query = PFQuery(className: self.className)
+                let query = PFQuery(className: self.className)
                 query.getObjectInBackgroundWithId(boxID!, block: {(boxObj: PFObject?, error:NSError?) -> Void in
                     // If a PFObject is found then save it
                     if boxObj != nil {
@@ -302,13 +302,13 @@ class BoxesOut {
                         self.boxesObject = boxObj
                     }
                     else {
-                        println("Error: \(error?.userInfo)")
+                        print("Error: \(error?.userInfo)")
                     }
                     dispatch_group_leave(self.fetchExistingBox) // Exit dispatch group
                 })
             }
             else {
-                println("Error box does not exist")
+                print("Error box does not exist")
             }
         }
     }
@@ -325,11 +325,11 @@ class BoxesOut {
             else {
                 self.boxesObject?.saveInBackgroundWithBlock{( success:Bool, error: NSError?) -> Void in
                     if success {
-                        println("Saved boxes info")
+                        print("Saved boxes info")
                         ObjectIdDictionary.sharedInstance.saveBoxID((self.boxesObject?.objectId)!, boxNumber: self.boxNumber)
                     }
                     else {
-                        println("Error: \(error?.userInfo)")
+                        print("Error: \(error?.userInfo)")
                     }
                 }
             }
@@ -376,20 +376,20 @@ class MapPoint {
         dispatch_group_enter(fetchExistingMapPoint) // Enter dispatch group
         ObjectIdDictionary.sharedInstance.getMapPointId(mapPointNum) {(mapPointID) -> Void in
             if mapPointID != nil {
-                var query = PFQuery(className: self.className)
+                let query = PFQuery(className: self.className)
                 query.getObjectInBackgroundWithId(mapPointID!, block: {(mapPointObj: PFObject?, error: NSError?) -> Void in
                     if mapPointObj != nil {
                         self.mapPointObject = mapPointObj
                     }
                     else {
-                        println("Error: \(error?.userInfo)")
+                        print("Error: \(error?.userInfo)")
                     }
                     dispatch_group_leave(self.fetchExistingMapPoint) // Leave dispatch group
                 })
             }
                 // If no object ID found then the mapPoint has not been saved
             else {
-                println("Error mapPoint doesn't exist")
+                print("Error mapPoint doesn't exist")
             }
         }
     }
@@ -398,11 +398,11 @@ class MapPoint {
     func saveMapPointInfo() {
         mapPointObject?.saveInBackgroundWithBlock{( success:Bool, error:NSError?) -> Void in
             if success {
-                println("Saved map info")
+                print("Saved map info")
                 ObjectIdDictionary.sharedInstance.saveMapPontID((self.mapPointObject?.objectId)!, mapPointNumber: self.mapPointNumber)
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
             }
         }
     }
@@ -430,6 +430,7 @@ class ObjectIdDictionary {
     private var sistersDictObject: PFObject?
     // SistersDict with objectID and their respective usernames
     var sistersDictionary = [String: String]()
+    var sisStartTime:NSDate? = NSDate()
     
     // MapPoint Variables
     // MapPoint dictionary to call and save mapPointDict
@@ -484,15 +485,19 @@ class ObjectIdDictionary {
     // Obtain sister object ID
     func getSisterId(name: String, success:(sisID:String?) -> Void) {
         // Update the sisterIDDictionary just in case it has been updated
-        updateSisterIdDict()
+        let end = NSDate()
+        let dateComponents: NSDateComponents = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!.components(NSCalendarUnit.Second, fromDate: sisStartTime!, toDate: end, options: NSCalendarOptions())
+        if dateComponents.second > 60 {
+            updateSisterIdDict()
+        }
         
         // Wait until the sistersDictionary has been updated
         dispatch_group_notify(fetchSisDictID, GlobalMainQueue) {
             // Get the sisters object ID for her user name
-            println("SisDict: \(self.sistersDictionary)")
-            var sister = self.sistersDictionary[name]
+            //println("SisDict: \(self.sistersDictionary)")
+            let sister = self.sistersDictionary[name]
             if sister != nil {
-                println("Got the ID: \(sister)")
+                //println("Got the ID: \(sister)")
                 success(sisID: sister)
             }
             else {
@@ -513,13 +518,13 @@ class ObjectIdDictionary {
                     success(updateSuccess: true, sistersDict: self.sistersDictionary)
                 }
                 // Test the dictionary
-                println("Retrieved sisters Dict")
+                print("Retrieved sisters Dict")
                 if let sisterID = self.sistersDictionary["Cecilia Vera"] {
-                    println("Found sister ID: \(sisterID)")
+                    print("Found sister ID: \(sisterID)")
                 }
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
                 // If not successful then send results back
                 success(updateSuccess: false, sistersDict: nil)
             }
@@ -535,13 +540,11 @@ class ObjectIdDictionary {
                 self.sistersDictObject = sisDict
                 self.sistersDictionary = self.sistersDictObject?[self.sistersString] as! [String:String]
                 // Test the dictionary
-                println("Retrieved sisters Dict")
-                if let sisterID = self.sistersDictionary["Cecilia Vera"] {
-                    println("Found sister ID: \(sisterID)")
-                }
+                print("Retrieved sisters Dict")
+                self.sisStartTime = NSDate()
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
             }
             dispatch_group_leave(self.fetchSisDictID)
         }
@@ -549,17 +552,18 @@ class ObjectIdDictionary {
     
     private func getSisterIdDict() {
         // Get sister dictionary
-        var query = PFQuery(className: className)
+        let query = PFQuery(className: className)
         //dispatch_group_enter(fetchSisDictID)
         query.getObjectInBackgroundWithId(sisterDictID, block: {(sistersDict: PFObject?, error: NSError?) -> Void in
             if sistersDict != nil {
                 self.sistersDictObject = sistersDict
                 if let sisDict = self.sistersDictObject?[self.sistersString] as? [String:String] {
                     self.sistersDictionary = sisDict
+                    self.sisStartTime = NSDate()
                 }
             }
             else {
-                println("Error \(error?.userInfo)")
+                print("Error \(error?.userInfo)")
             }
             //dispatch_group_leave(self.fetchSisDictID)
         })
@@ -571,10 +575,10 @@ class ObjectIdDictionary {
         sistersDictObject?[sistersString] = sistersDictionary
         sistersDictObject?.saveInBackgroundWithBlock{(success:Bool, error: NSError?) -> Void in
             if success {
-                println("Saved objectID for sister")
+                print("Saved objectID for sister")
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
             }
         }
     }
@@ -590,7 +594,7 @@ class ObjectIdDictionary {
         dispatch_group_notify(fetchMapPointDictID, GlobalMainQueue) {
             // Get the mapPoint object ID
             if let mapPointId = self.mapPointDictionary?[String(mapPointNumber)] {
-                println("Got the mapPoint ID: \(mapPointId)")
+                print("Got the mapPoint ID: \(mapPointId)")
                 success(mapPointID: mapPointId)
             }
             else {
@@ -608,11 +612,11 @@ class ObjectIdDictionary {
                 self.mapPointDictObject = mapPointDictObj
                 if let mapDict = self.mapPointDictObject?[self.mapPointString] as? [String:String] {
                     self.mapPointDictionary = mapDict
-                    println("Got the mapPoint Dictionary")
+                    print("Got the mapPoint Dictionary")
                 }
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
             }
             dispatch_group_leave(self.fetchMapPointDictID) // Leave dispatch group
         }
@@ -620,15 +624,15 @@ class ObjectIdDictionary {
     
     private func getMapPointIdDict() {
         // Get mapPoint dictionary
-        var query = PFQuery(className: className)
+        let query = PFQuery(className: className)
         query.getObjectInBackgroundWithId(mapPointDictID, block: {(mapPointDict: PFObject?, error: NSError?) -> Void in
             if mapPointDict != nil {
                 self.mapPointDictObject = mapPointDict
                 self.mapPointDictionary = self.mapPointDictObject?[self.sistersString] as? [String: String]
-                println("Retrieved mapPoint Dict")
+                print("Retrieved mapPoint Dict")
             }
             else {
-                println("Error \(error?.userInfo)")
+                print("Error \(error?.userInfo)")
             }
         })
     }
@@ -639,10 +643,10 @@ class ObjectIdDictionary {
         mapPointDictObject?[mapPointString] = mapPointDictionary
         mapPointDictObject?.saveInBackgroundWithBlock{(success:Bool, error: NSError?) -> Void in
             if success {
-                println("Saved objectID for mapPoint")
+                print("Saved objectID for mapPoint")
             }
             else {
-                println("Error \(error?.userInfo)")
+                print("Error \(error?.userInfo)")
             }
         }
     }
@@ -672,17 +676,17 @@ class ObjectIdDictionary {
         dispatch_group_enter(fetchBoxInfoDictID)
         boxInfoDictObject?.fetchInBackgroundWithBlock{(boxDict: PFObject?, error:NSError?) -> Void in
             if boxDict != nil {
-                println("Found boxInfoDictObject")
+                print("Found boxInfoDictObject")
                 self.boxInfoDictObject = boxDict
                 if let boxesDict = self.boxInfoDictObject?[self.boxInfoString] as? [String:String] {
-                    println("Got boxesDictionary")
+                    print("Got boxesDictionary")
                     self.boxesDictionary = boxesDict
                     // If we could obtain the dictionary then pass that back
                     success(updateSuccess: true, boxDict: self.boxesDictionary)
                 }
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
                 // If not succesful then send results back
                 success(updateSuccess: false, boxDict: nil)
             }
@@ -701,7 +705,7 @@ class ObjectIdDictionary {
                 }
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
             }
             dispatch_group_leave(self.fetchBoxInfoDictID)
         }
@@ -710,20 +714,20 @@ class ObjectIdDictionary {
     // Get boxesDictionary from parse server
     private func getBoxIdDict() {
         // Get box dictionary
-        var query = PFQuery(className: className)
+        let query = PFQuery(className: className)
         
         query.getObjectInBackgroundWithId(boxInfoDictID, block: {(boxesDictObj:PFObject?, error:NSError?) -> Void in
             if boxesDictObj != nil {
-                println("Found boxInfoDictObject")
+                print("Found boxInfoDictObject")
                 self.boxInfoDictObject = boxesDictObj
                 // Get boxesDictionary if available
                 if let boxDict = self.boxInfoDictObject?[self.boxInfoString] as? [String:String] {
-                    println("Got boxesDictionary")
+                    print("Got boxesDictionary")
                     self.boxesDictionary = boxDict
                 }
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
             }
         })
     }
@@ -734,10 +738,10 @@ class ObjectIdDictionary {
         boxInfoDictObject?[boxInfoString] = boxesDictionary
         boxInfoDictObject?.saveInBackgroundWithBlock{(success:Bool, error:NSError?) -> Void in
             if success {
-                println("Saved objectID for box")
+                print("Saved objectID for box")
             }
             else {
-                println("Error: \(error?.userInfo)")
+                print("Error: \(error?.userInfo)")
             }
         }
     }

@@ -76,7 +76,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         clearTextFields()
         // If a navBar is present then add left and right bar items
         if self.navigationController != nil {
-            var leftItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: Selector("cancelAction"))
+            let leftItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: Selector("cancelAction"))
             rightItem = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: Selector("doneAction"))
             rightItem.enabled = false
             self.navigationItem.leftBarButtonItem = leftItem
@@ -97,7 +97,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
     }
     
     // If view is touched then dismiss the textfield
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
         if textFieldHolder != nil {
             if (textFieldHolder?.isFirstResponder())! {
@@ -246,7 +246,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
     // Add a background to differentiate what has been filled in and what hasn't
     func addBackground(textField: UITextField, filled:Bool) {
         // Make blur
-        var blur:UIVisualEffectView! = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+        let blur:UIVisualEffectView! = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
         blur.frame = CGRectMake(0, 0, textField.frame.width, textField.frame.height)
         blur.alpha = viewAlpha
         blur.userInteractionEnabled = false
@@ -254,7 +254,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         blur.clipsToBounds = true
         
         // Make colored background
-        var backView:UIView! = UIView(frame: CGRectMake(0, 0, textField.frame.width, textField.frame.height))
+        let backView:UIView! = UIView(frame: CGRectMake(0, 0, textField.frame.width, textField.frame.height))
         backView.alpha = viewAlpha
         backView.layer.cornerRadius = cornerRad
         backView.clipsToBounds = true
@@ -274,21 +274,21 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setDays() {
-        var calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+        let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
         // Friday
-        var friday = NSDateComponents()
+        let friday = NSDateComponents()
         friday.day = 12
         friday.month = 6
         friday.year = 2015
         fridayD = calendar?.dateFromComponents(friday)
         // Saturday
-        var saturday = NSDateComponents()
+        let saturday = NSDateComponents()
         saturday.day = 13
         saturday.month = 6
         saturday.year = 2015
         saturdayD = calendar?.dateFromComponents(saturday)
         // Sunday
-        var sunday = NSDateComponents()
+        let sunday = NSDateComponents()
         sunday.day = 14
         sunday.month = 6
         sunday.year = 2015
@@ -327,7 +327,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
                 datePickerView.setDate(sundayD, animated: false)
             }
         default:
-            println("Not a convention day")
+            print("Not a convention day")
         }
         sender.inputView = datePickerView
         datePickerView.addTarget(self, action: Selector("handleDatePickerView:"), forControlEvents: UIControlEvents.ValueChanged)
@@ -339,9 +339,9 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         textFieldHolder?.textColor = UIColor.whiteColor()
         switch (textFieldHolder?.tag)! {
         case 5:
-            sisInfo?.phoneNumber = textFieldHolder?.text.toInt()
+            sisInfo?.phoneNumber = Int((textFieldHolder?.text)!)
         case 6:
-            sisInfo?.housePhone = textFieldHolder?.text.toInt()
+            sisInfo?.housePhone = Int((textFieldHolder?.text)!)
         case 7:
             textFieldHolder?.text = timeFormatter.stringFromDate(datePickerView.date)
             sisInfo?.fridayTime = datePickerView.date
@@ -352,7 +352,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
             textFieldHolder?.text = timeFormatter.stringFromDate(datePickerView.date)
             sisInfo?.sundayTime = datePickerView.date
         default:
-            println("Not a valid textField")
+            print("Not a valid textField")
         }
         textFieldHolder?.resignFirstResponder()
         checkIfChangesMade()
@@ -372,7 +372,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         case 9:
             sisInfo?.sundayTime = nil
         default:
-            println("Not a valid textField")
+            print("Not a valid textField")
         }
         textFieldHolder?.text = ""
         textFieldHolder?.resignFirstResponder()
@@ -387,12 +387,12 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
     
     // Create a uitoolbar to add on top of uidatepicker
     func createDateToolbar(sender:UITextField) {
-        var toolBar = UIToolbar(frame: CGRectMake(0, 0, 0, 44))
-        var doneButton = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: Selector("donePicking"))
-        var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-        var cancelButton = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: Selector("cancelPicking"))
-        var removeButton = UIBarButtonItem(title: "Remove", style: .Plain, target: self, action: Selector("removeValue"))
-        var items:[AnyObject]! = [AnyObject]()
+        let toolBar = UIToolbar(frame: CGRectMake(0, 0, 0, 44))
+        let doneButton = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: Selector("donePicking"))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: Selector("cancelPicking"))
+        let removeButton = UIBarButtonItem(title: "Remove", style: .Plain, target: self, action: Selector("removeValue"))
+        var items:[UIBarButtonItem]! = [UIBarButtonItem]()
         items.append(cancelButton)
         items.append(flexibleSpace)
         items.append(removeButton)
@@ -400,7 +400,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         items.append(doneButton)
         toolBar.items = items
         toolBar.sizeToFit()
-        println("Called")
+        print("Called")
         sender.inputAccessoryView = toolBar
     }
     
@@ -415,7 +415,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         case 9:
             textFieldHolder?.text = timeFormatter.stringFromDate(sender.date)
         default:
-            println("Not a valid textField")
+            print("Not a valid textField")
         }
     }
     
@@ -429,7 +429,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         case 5,6:
             createDateToolbar(textField)
         default:
-            println("It's another textField")
+            print("It's another textField")
         }
         
         return true
@@ -437,11 +437,11 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
     
     // If keyboard will cover a textField then move the views
     func keyboardDidShow(notification:NSNotification) {
-        var info:NSDictionary = notification.userInfo!
-        var keyboardFrame:CGRect! = (info.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue).CGRectValue()
+        let info:NSDictionary = notification.userInfo!
+        let keyboardFrame:CGRect! = (info.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue).CGRectValue()
         
         if (self.view.frame.height - keyboardFrame.size.height) < ((textFieldHolder?.frame.height)! + (textFieldHolder?.frame.origin.y)!) {
-            println("keyboard did show")
+            print("keyboard did show")
             moved = true
             
             UIView.animateWithDuration(0.1, animations: {() -> Void in
@@ -462,7 +462,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
     // If we did move view for keyboard then place everything back
     func keyboardDidHide(notification:NSNotification) {
         if moved! {
-            var info:NSDictionary = notification.userInfo!
+            let info:NSDictionary = notification.userInfo!
             var keyboardFrame:CGRect! = (info.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue).CGRectValue()
             
             UIView.animateWithDuration(0.1, animations: {() -> Void in
@@ -489,7 +489,7 @@ class EditListDetailViewController: UIViewController, UITextFieldDelegate {
         case 4:
             sisInfo?.email = textField.text
         default:
-            println("Not a valid textField")
+            print("Not a valid textField")
         }
         
         // If changes have been made then enable the Done button

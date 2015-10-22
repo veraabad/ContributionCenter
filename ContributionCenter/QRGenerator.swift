@@ -16,29 +16,29 @@ class QRGenerator {
     init(qrString: String, sizeRate: CGFloat) {
         
         // Generate QR image from CIFilter
-        var filter:CIFilter! = CIFilter(name: "CIQRCodeGenerator")
+        let filter:CIFilter! = CIFilter(name: "CIQRCodeGenerator")
         filter.setDefaults()
         
         // Pass string to CIFilter
-        var data:NSData! = qrString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+        let data:NSData! = qrString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
         filter.setValue(data, forKey: "inputMessage")
         
         // Obtain QR image from CIFilter
-        var outputImg:CIImage! = filter.outputImage
+        let outputImg:CIImage! = filter.outputImage
         
         // Create context in order to generate QR code
-        var context = CIContext(options: [kCIContextUseSoftwareRenderer: true])
-        var cgimg:CGImageRef! = context.createCGImage(outputImg, fromRect: outputImg.extent())
+        let context = CIContext(options: [kCIContextUseSoftwareRenderer: true])
+        let cgimg:CGImageRef! = context.createCGImage(outputImg, fromRect: outputImg.extent)
         
-        var img:UIImage! = UIImage(CGImage: cgimg, scale: 1.0, orientation: UIImageOrientation.Up)
+        var img:UIImage! = UIImage(CGImage: cgimg, scale: 0.5, orientation: UIImageOrientation.Up)
         
-        var width:CGFloat! = img.size.width * sizeRate
-        var height:CGFloat! = img.size.height * sizeRate
+        let width:CGFloat! = img.size.width * sizeRate
+        let height:CGFloat! = img.size.height * sizeRate
         
         UIGraphicsBeginImageContext(CGSizeMake(width, height))
-        var cgContext:CGContextRef! = UIGraphicsGetCurrentContext()
+        let cgContext:CGContextRef! = UIGraphicsGetCurrentContext()
         
-        CGContextSetInterpolationQuality(cgContext, kCGInterpolationNone)
+        CGContextSetInterpolationQuality(cgContext, CGInterpolationQuality.None)
         img.drawInRect(CGRectMake(0, 0, width, height))
         img = UIGraphicsGetImageFromCurrentImageContext()
         

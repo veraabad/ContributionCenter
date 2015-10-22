@@ -41,7 +41,7 @@ class ListDetailViewController: UIViewController, EditListDetailViewControllerDe
         }
         
         if self.navigationController != nil {
-            var rightItem = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: Selector("editSisterInfo"))
+            let rightItem = UIBarButtonItem(title: "Edit", style: .Plain, target: self, action: Selector("editSisterInfo"))
             self.navigationItem.rightBarButtonItem = rightItem
         }
     }
@@ -112,7 +112,7 @@ class ListDetailViewController: UIViewController, EditListDetailViewControllerDe
                 self.parseSisterInfo()
             }
             else {
-                println("Was unable to fetch most recent sister info")
+                print("Was unable to fetch most recent sister info")
             }
         }
     }

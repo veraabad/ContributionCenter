@@ -39,9 +39,16 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
             
             // Navigation item on the right
-            var rightItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
-            self.navigationItem.leftBarButtonItem = rightItem
+            let leftItem = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .Plain, target: self, action: Selector("showMenuAction"))
+            let rightItem = UIBarButtonItem(title: "QR", style: .Plain, target: self, action: Selector("loadPrintVC"))
+            self.navigationItem.leftBarButtonItem = leftItem
+            self.navigationItem.rightBarButtonItem = rightItem
         }
+    }
+    
+    func loadPrintVC() {
+        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("PrintVC") as! PrintViewController
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -65,13 +72,13 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func obtainSisterDict() {
         ObjectIdDictionary.sharedInstance.updateSisterIdDict{(success:Bool, sisDict: [String:String]?) -> Void in
             if success {
-                if let keys = sisDict?.keys.array {
-                    self.sisDictArray = keys
+                if let keys = sisDict?.keys {
+                    self.sisDictArray = Array(keys)
                     self.obtainSistersInfo()
                 }
             }
             else {
-                println("Sisters object ID dictionary was not found")
+                print("Sisters object ID dictionary was not found")
             }
         }
     }
@@ -83,13 +90,14 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             sisInfo = SisterInfo(sisterName: name) {(success) -> Void in
                 if success {
                     self.sistersArray! += [sisInfo!]
-                    if self.sistersArray?.count == self.sisDictArray?.count {
+                    // Reload after loading 10
+                    if ((self.sistersArray?.count)! % 10) == 0 || self.sistersArray?.count == self.sisDictArray?.count {
                         self.sortSisterArray()
                         self.listTableView.reloadData()
                     }
                 }
                 else {
-                    println("Sister has not been saved yet")
+                    print("Sister has not been saved yet")
                 }
             }
         }
@@ -97,7 +105,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     // Sort the sistesr Array
     func sortSisterArray() {
-        sistersArray?.sort({s1, s2 in
+        sistersArray?.sortInPlace({s1, s2 in
             if s1.lastName < s2.lastName {
                 return true // If lastName is greater then place it on top
             }
@@ -118,15 +126,15 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func createBlur(dateBttn:UIButton) {
-        var cornerRad:CGFloat = dateBttn.frame.height / 2
+        let cornerRad:CGFloat = dateBttn.frame.height / 2
         // Blur for background of dates
-        var blur:UIVisualEffectView! = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
+        let blur:UIVisualEffectView! = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.Light))
         blur.frame = CGRectMake(0, 0, dateBttn.frame.height, dateBttn.frame.height)
         blur.userInteractionEnabled = false
         blur.layer.cornerRadius = cornerRad
         blur.clipsToBounds = true
         // Give it some color
-        var backView:UIView! = UIView(frame: CGRectMake(0, 0, dateBttn.frame.height, dateBttn.frame.height))
+        let backView:UIView! = UIView(frame: CGRectMake(0, 0, dateBttn.frame.height, dateBttn.frame.height))
         backView.backgroundColor = colorBack
         backView.alpha = viewAlpha
         backView.layer.cornerRadius = cornerRad
@@ -144,8 +152,8 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func removeBlur(dateBttn:UIButton) {
         var subViews = dateBttn.subviews
         if subViews.count >= 3 {
-            var subView1 = subViews[0] as! UIView
-            var subView2 = subViews[1] as! UIView
+            let subView1 = subViews[0] as UIView
+            let subView2 = subViews[1] as UIView
             subView1.removeFromSuperview()
             subView2.removeFromSuperview()
         }
@@ -198,11 +206,11 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("Row selected is: \(indexPath.row)")
+        print("Row selected is: \(indexPath.row)")
         let cell = listTableView.cellForRowAtIndexPath(indexPath) as! ListTableViewCell
         
         // Instantiante view controller
-        var vc = self.storyboard?.instantiateViewControllerWithIdentifier("ListDetailVC") as! ListDetailViewController
+        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("ListDetailVC") as! ListDetailViewController
         if let sisInfo = cell.sisInfo {
             vc.sisterInfo = sisInfo
         }
